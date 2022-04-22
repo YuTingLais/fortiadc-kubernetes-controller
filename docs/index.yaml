@@ -21,6 +21,6 @@ entries:
     name: fadc-k8s-ctrl
     type: application
     urls:
-    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-1.0.1.tgz
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-1.0.0.tgz
     version: 1.0.0
 generated: "2022-04-22T02:28:26.968171862-04:00"
