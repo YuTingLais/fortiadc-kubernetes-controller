@@ -18,10 +18,6 @@ spec:
       labels:
         {{- include "fadc-k8s-ctrl.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -45,9 +41,6 @@ spec:
           - name: VirtualServerPersistence
             value: {{ .Values.parameters.virtualServerPersistence }}
 
-#   envFrom:
-#          - configMapRef:
-#              name: parameters
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
