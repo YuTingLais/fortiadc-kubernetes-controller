@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-sise
+  labels:
+    run: my-sise
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: sise
+    spec:
+      containers:
+        - name: sise
+          image: mhausenblas/simpleservice:0.5.0
+          ports:
+            - containerPort: 9876
+              name: sise-default
+      tolerations:
+      - effect: "NoExecute"
+        key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        tolerationSeconds: 300
+      - effect: "NoExecute"
+        key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        tolerationSeconds: 300
+  selector:
+    matchLabels:
+      run: sise
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: service1
+  namespace: default
+  annotations: {
+    "health-check-ctrl" : "enable",
+    "health-check-relation" : "OR",
+    "health-check-list" : "LB_HLTHCK_ICMP",
+    "real-server-ssl-profile" : "NONE",
+    "overlay_tunnel" : "k8s",
+  }
+spec:
+#  type: NodePort
+  ports:
+  - port: 1241
+    protocol: TCP
+    targetPort: sise-default
+  selector:
+    run: sise
+  sessionAffinity: None
