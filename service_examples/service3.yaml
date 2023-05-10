@@ -20,10 +20,10 @@ metadata:
     "health-check-ctrl" : "enable",
     "health-check-relation" : "OR",
     "health-check-list" : "LB_HLTHCK_ICMP",
-    "real-server-ssl-profile" : "NONE"
+    "real-server-ssl-profile" : "NONE",
+    "overlay_tunnel" : "k8s"
   }
 spec:
-  type: NodePort
   ports:
   - port: 1245
     protocol: TCP
