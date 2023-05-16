@@ -7,7 +7,7 @@ metadata:
     "virtual-server-port" : "",
     "virtual-server-interface" : "port1",
     "fortiadc-ctrl-log" : "enable",
-    "fortiadc-ip" : "10.0.100.133",
+    "fortiadc-ip" : "10.0.100.132",
     "fortiadc-login" : "fad-login",
     "load-balance-method" : "LB_METHOD_LEAST_CONNECTION",
     "fortiadc-vdom" : "root"
