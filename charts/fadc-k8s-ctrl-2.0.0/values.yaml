@@ -58,3 +58,4 @@ parameters:
   virtualServerCaptchaProfile : "optional"
   virtualServerPersistence : "optional"
   virtualServerFortiGSLB : "optional"
+  openshiftRouteSupport: "no"
