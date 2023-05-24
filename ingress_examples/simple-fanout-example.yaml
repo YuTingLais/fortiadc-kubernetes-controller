@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: simple-fanout-example
   annotations: {
-    "fortiadc-ip" : "10.0.100.132",
+    "fortiadc-ip" : "10.0.100.133",
     "fortiadc-login" : "fad-login",
     "fortiadc-vdom" : "root",
     "fortiadc-ctrl-log" : "enable",
-    "virtual-server-ip" : "10.0.100.135",
+    "virtual-server-ip" : "172.23.133.6",
     "virtual-server-interface" : "port1",    
     "virtual-server-port" : "443",
     "load-balance-method" : "LB_METHOD_LEAST_CONNECTION",

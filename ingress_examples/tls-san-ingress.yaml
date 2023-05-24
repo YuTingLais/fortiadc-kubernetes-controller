@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: tls-foo
   annotations: {
-    "virtual-server-ip" : "10.0.100.136",
+    "virtual-server-ip" : "172.23.133.15",
     "virtual-server-port" : "",
     "virtual-server-interface" : "port1",
     "fortiadc-ctrl-log" : "enable",
-    "fortiadc-ip" : "10.0.100.132",
+    "fortiadc-ip" : "10.0.100.133",
     "fortiadc-login" : "fad-login",
     "load-balance-method" : "LB_METHOD_LEAST_CONNECTION",
     "fortiadc-vdom" : "root"
