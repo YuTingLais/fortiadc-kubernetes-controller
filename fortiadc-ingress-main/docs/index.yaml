@@ -1,0 +1,70 @@
+apiVersion: v1
+entries:
+  fadc-k8s-ctrl:
+  - apiVersion: v2
+    appVersion: 2.0.3-600
+    created: "2024-12-04T23:08:11.220999067-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: cad2f64ef9ee17c4cefa91e49ef0fccbd825f6f4c7b135b169660c02e9ff05bf
+    kubeVersion: '>= 1.19.8-0, <= 1.31-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-2.0.3-600.tgz
+    version: 2.0.3-600
+  - apiVersion: v2
+    appVersion: 2.0.1
+    created: "2024-12-04T23:08:11.220832115-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 55676629a6ca96e5b740e46a0489566ae6571dd7bfa5c1070aebfd36e24a5117
+    kubeVersion: '>= 1.19.8-0, <= 1.28-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2024-12-04T23:08:11.220664312-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 82c6439541f4182ad4a19094e2ed0d41bca903de345ab0102b22735ff4e35cbc
+    kubeVersion: '>= 1.19.8-0, <= 1.27-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2024-12-04T23:08:11.220493618-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 909e43e988491ffbc1c28362e6b2a363c1a4dc04b2eee541922fa4c4ee2cc855
+    kubeVersion: '>= 1.19.8-0, <= 1.27-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2024-12-04T23:08:11.220340936-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 2f44ff7c32e02347063885d524d658f946dcccf5b738e9c255825b17e89aaf74
+    kubeVersion: '>= 1.19.8-0, <= 1.24-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-12-04T23:08:11.220174084-08:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 61d443ca6fd89bb47d156a34c7d19d3a9654bf18736631e3ba340cdf4724a0ce
+    kubeVersion: '>= 1.19.8-0, <= 1.23-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-ingress/raw/main/docs/fadc-k8s-ctrl-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-12-04T23:08:11.219927957-08:00"
