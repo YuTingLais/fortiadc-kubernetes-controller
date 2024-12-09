@@ -5,7 +5,7 @@
 image:
   repository: ytlai/fortiadc-k8s-ctrl
   pullPolicy: IfNotPresent
-  tag: "2.0.3.600"
+  tag: "2.0.3.602"
 
 nameOverride: ""
 fullnameOverride: ""
