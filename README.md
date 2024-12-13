@@ -33,7 +33,7 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=6>Version</th>
+            <th colspan=7>Version</th>
         </tr>
     </thead>
     <tbody>
