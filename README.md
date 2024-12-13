@@ -45,6 +45,7 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
             <td>2.0.0</td>
             <td>2.0.1</td>
             <td>2.0.2</td>
+            <td>2.0.3</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
@@ -53,10 +54,11 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
             <td colspan=2>1.19.8-1.27.x</td>
             <td>1.19.8-1.28.x</td>
             <td>1.19.8-1.30.x</td>
+            <td>1.19.8-1.32.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=6>5.4.5 - 7.4.x*</td>
+            <td colspan=6>5.4.5 - 7.6.x*</td>
         </tr>
 	    <tr>
             <td>Openshift Container platform</td>
