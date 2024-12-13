@@ -58,13 +58,13 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=6>5.4.5 - 7.6.x*</td>
+            <td colspan=7>5.4.5 - 7.6.x*</td>
         </tr>
 	    <tr>
             <td>Openshift Container platform</td>
             <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td> 4.13-4.15.x</td>
+            <td colspan=2> 4.13-4.15.x</td>
         </tr>
     </tbody>
 </table>
