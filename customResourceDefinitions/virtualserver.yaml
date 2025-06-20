@@ -1,0 +1,26 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: VirtualServer
+metadata:
+  name: minimal-virtualserver
+  annotations: {
+    "fortiadc-ip" : "172.23.133.110",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  addressType: ipv4
+  address: 192.168.1.102
+  port: 443
+  interface: port1
+  loadBalanceProfile: LB_PROF_HTTPS
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  contentRoutings:
+    - name: default_route
+      path: /
+      pathType: Prefix
+      RealServerPool:
+        service: default-http-backend
+        servicePort: 80
+        serviceNamespace: default
+  vdom: root
