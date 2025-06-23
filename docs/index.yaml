@@ -2,8 +2,41 @@ apiVersion: v1
 entries:
   fadc-k8s-ctrl:
   - apiVersion: v2
+    appVersion: 3.0.0-546
+    created: "2025-06-22T23:52:53.431416699-07:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: eff77518c12ee30d91ee8fc7a6906c24514363cbf554067efe29e03d01b98fa3
+    kubeVersion: '>= 1.19.8-0, <= 1.32-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-kubernetes-controller/raw/main/docs/fadc-k8s-ctrl-3.0.0-546.tgz
+    version: 3.0.0-546
+  - apiVersion: v2
+    appVersion: 3.0.0-545
+    created: "2025-06-22T23:52:53.430800088-07:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 77933904cce427cec38721792e2b9c210f0002c41dce62f8f0508cbe67281bb1
+    kubeVersion: '>= 1.19.8-0, <= 1.32-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-kubernetes-controller/raw/main/docs/fadc-k8s-ctrl-3.0.0-545.tgz
+    version: 3.0.0-545
+  - apiVersion: v2
+    appVersion: 3.0.0-543
+    created: "2025-06-22T23:52:53.430289698-07:00"
+    description: A Helm chart for FortiADC Ingress Controller
+    digest: 7f27292a2c8bfef52b05f256568aa792e318927f33bb0a1523c7cd03fcad8970
+    kubeVersion: '>= 1.19.8-0, <= 1.32-0'
+    name: fadc-k8s-ctrl
+    type: application
+    urls:
+    - https://github.com/YuTingLais/fortiadc-kubernetes-controller/raw/main/docs/fadc-k8s-ctrl-3.0.0-543.tgz
+    version: 3.0.0-543
+  - apiVersion: v2
     appVersion: 3.0.0-542
-    created: "2025-06-20T00:57:26.525508359-07:00"
+    created: "2025-06-22T23:52:53.429787913-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 3fe343e65e253c45eab2d7247ce4a9a763838738c7fcb448f3ac61457a0a3973
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -14,7 +47,7 @@ entries:
     version: 3.0.0-542
   - apiVersion: v2
     appVersion: 3.0.0-541
-    created: "2025-06-20T00:57:26.524879762-07:00"
+    created: "2025-06-22T23:52:53.429297669-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: a726861ea1e47b45683f53247bc2c0f09b4bf04e432e59e81c501e96c40c7c90
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -25,7 +58,7 @@ entries:
     version: 3.0.0-541
   - apiVersion: v2
     appVersion: 3.0.0-540
-    created: "2025-06-20T00:57:26.524230276-07:00"
+    created: "2025-06-22T23:52:53.428836176-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 0916c2ff16d816a6bccc84a2d6dcd3ea8222f531095dd1ff56c5d473ae32872a
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -36,7 +69,7 @@ entries:
     version: 3.0.0-540
   - apiVersion: v2
     appVersion: 3.0.0-539
-    created: "2025-06-20T00:57:26.523557726-07:00"
+    created: "2025-06-22T23:52:53.428383373-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 9338176445437c100a08e5fea5849daf40078037eba3f89dadd4dff0ab648e9e
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -47,7 +80,7 @@ entries:
     version: 3.0.0-539
   - apiVersion: v2
     appVersion: 3.0.0-538
-    created: "2025-06-20T00:57:26.522626468-07:00"
+    created: "2025-06-22T23:52:53.427872621-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: ea688638120c5b3d27efc5c82a9877ccd852751e3c73f2dd4255a17d036097e4
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -58,7 +91,7 @@ entries:
     version: 3.0.0-538
   - apiVersion: v2
     appVersion: 3.0.0-537
-    created: "2025-06-20T00:57:26.521578727-07:00"
+    created: "2025-06-22T23:52:53.427321656-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: adee3f263b5d3ebb9990ff1f7c0d9eb9a6ab44213400b5a2dd1ef4cab43c262a
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -69,7 +102,7 @@ entries:
     version: 3.0.0-537
   - apiVersion: v2
     appVersion: 3.0.0-536
-    created: "2025-06-20T00:57:26.520504763-07:00"
+    created: "2025-06-22T23:52:53.426702521-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: bd00944b08dbeb8c3e0c26f06bc59d08e931c020e15c19e3d4d63c960d6eb9a9
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -80,7 +113,7 @@ entries:
     version: 3.0.0-536
   - apiVersion: v2
     appVersion: 3.0.0-535
-    created: "2025-06-20T00:57:26.519438535-07:00"
+    created: "2025-06-22T23:52:53.426100923-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 86f22e991f8b729e06500b741f9f77f4315f8ed2a1c2667da9b1406c91da8605
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -91,7 +124,7 @@ entries:
     version: 3.0.0-535
   - apiVersion: v2
     appVersion: 3.0.0-534
-    created: "2025-06-20T00:57:26.518542564-07:00"
+    created: "2025-06-22T23:52:53.425479983-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 92dd10ab4cb1641fdee993c0695dc8288c560b9d1c7e96fc56f1b5b81ccd5a3f
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -102,7 +135,7 @@ entries:
     version: 3.0.0-534
   - apiVersion: v2
     appVersion: 3.0.0-533
-    created: "2025-06-20T00:57:26.517588721-07:00"
+    created: "2025-06-22T23:52:53.424591494-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 11416414883603609fb96414dde0f59739ad2ccbb6627f045d84162abc57fc30
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -113,7 +146,7 @@ entries:
     version: 3.0.0-533
   - apiVersion: v2
     appVersion: 3.0.0-532
-    created: "2025-06-20T00:57:26.516405427-07:00"
+    created: "2025-06-22T23:52:53.424313944-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: af3b3529f6ab4877160e7502af7f89f4abc32c3cb2899fa73ea232f34bd9e463
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -124,7 +157,7 @@ entries:
     version: 3.0.0-532
   - apiVersion: v2
     appVersion: 3.0.0-531
-    created: "2025-06-20T00:57:26.514490336-07:00"
+    created: "2025-06-22T23:52:53.424013825-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 2983980b3dee82f44ff5228ba1b005771bc8202dce5e774f36515519c32ef19b
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -135,7 +168,7 @@ entries:
     version: 3.0.0-531
   - apiVersion: v2
     appVersion: 3.0.0-530
-    created: "2025-06-20T00:57:26.513804446-07:00"
+    created: "2025-06-22T23:52:53.423728959-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 8fda1a5747d49c0b3a9bd3d2de1b1e5a2c2f178e531813f296911a0679d354c5
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -146,7 +179,7 @@ entries:
     version: 3.0.0-530
   - apiVersion: v2
     appVersion: 3.0.0-529
-    created: "2025-06-20T00:57:26.513100701-07:00"
+    created: "2025-06-22T23:52:53.423460057-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: b537e1286a719cdb4350c44f26efde46bc09b8ef414d34bd6036e74e8062b6c9
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -157,7 +190,7 @@ entries:
     version: 3.0.0-529
   - apiVersion: v2
     appVersion: 3.0.0-528
-    created: "2025-06-20T00:57:26.51234579-07:00"
+    created: "2025-06-22T23:52:53.423189527-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: be625343c444869d9becd84ca5ff5ca25339b7013a4587cd7e0314eafb8193fd
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -168,7 +201,7 @@ entries:
     version: 3.0.0-528
   - apiVersion: v2
     appVersion: 3.0.0-527
-    created: "2025-06-20T00:57:26.511493794-07:00"
+    created: "2025-06-22T23:52:53.422930951-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 549e9cc5d110537430e6a2d14f8bde1d50c5a7e6537ea281a096cb21f2df2d44
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -179,7 +212,7 @@ entries:
     version: 3.0.0-527
   - apiVersion: v2
     appVersion: 3.0.0-526
-    created: "2025-06-20T00:57:26.510694379-07:00"
+    created: "2025-06-22T23:52:53.422673912-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 718db5728db876f93806b95b1e5cc03039c5bcee584a2ce9412074b68015751a
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -190,7 +223,7 @@ entries:
     version: 3.0.0-526
   - apiVersion: v2
     appVersion: 3.0.0-525
-    created: "2025-06-20T00:57:26.510019918-07:00"
+    created: "2025-06-22T23:52:53.422428077-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: fb72b60111219cb9cfe39b7005049aaf7589c05397debe91857857ca9cdea3be
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -201,7 +234,7 @@ entries:
     version: 3.0.0-525
   - apiVersion: v2
     appVersion: 3.0.0-524
-    created: "2025-06-20T00:57:26.509336163-07:00"
+    created: "2025-06-22T23:52:53.422180737-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: b0902dea5f90c97ce119a6d792a5f5eb844382d5538d1ee60a15fb49a40c203d
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -212,7 +245,7 @@ entries:
     version: 3.0.0-524
   - apiVersion: v2
     appVersion: 3.0.0-523
-    created: "2025-06-20T00:57:26.508676656-07:00"
+    created: "2025-06-22T23:52:53.421939266-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 91044d9e2226907859dafa119e89c5ac50990ca24dd7a2ba3d19d97568b509e1
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -223,7 +256,7 @@ entries:
     version: 3.0.0-523
   - apiVersion: v2
     appVersion: 3.0.0-522
-    created: "2025-06-20T00:57:26.508000359-07:00"
+    created: "2025-06-22T23:52:53.421701133-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 0d413415bf11c51fd95a643e436d6c808d37e61a9087dc75605112bee47a5ef8
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -234,7 +267,7 @@ entries:
     version: 3.0.0-522
   - apiVersion: v2
     appVersion: 3.0.0-521
-    created: "2025-06-20T00:57:26.507339521-07:00"
+    created: "2025-06-22T23:52:53.421465016-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 571e5ca212c471ce2aa1aba8ef7afbd28552102e6c1efbba5d6af0555f9801ee
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -245,7 +278,7 @@ entries:
     version: 3.0.0-521
   - apiVersion: v2
     appVersion: 3.0.0-520
-    created: "2025-06-20T00:57:26.506668117-07:00"
+    created: "2025-06-22T23:52:53.421229852-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: ba64a837c9c9bbe9f950f1e967985f2773d8534edaca2a2f288ed1118497b9f3
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -256,7 +289,7 @@ entries:
     version: 3.0.0-520
   - apiVersion: v2
     appVersion: 3.0.0-519
-    created: "2025-06-20T00:57:26.505993946-07:00"
+    created: "2025-06-22T23:52:53.420992752-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: b5c21d71e2f30ccfce346523862aac4a3f435bb32e7cdc6f101a9195fbb6477d
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -267,7 +300,7 @@ entries:
     version: 3.0.0-519
   - apiVersion: v2
     appVersion: 3.0.0-518
-    created: "2025-06-20T00:57:26.505319091-07:00"
+    created: "2025-06-22T23:52:53.420747458-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 401272cb58164a1496410d03efcf57e5cde3da3efa7f802f59e1ab907c48a8c1
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -278,7 +311,7 @@ entries:
     version: 3.0.0-518
   - apiVersion: v2
     appVersion: 3.0.0-517
-    created: "2025-06-20T00:57:26.504642599-07:00"
+    created: "2025-06-22T23:52:53.420488872-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 5e722807943581560d15dcc774c261bd981ffefd8752f2ed08b6029fc7c39c83
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -289,7 +322,7 @@ entries:
     version: 3.0.0-517
   - apiVersion: v2
     appVersion: 3.0.0-516
-    created: "2025-06-20T00:57:26.503945095-07:00"
+    created: "2025-06-22T23:52:53.420237165-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 3efc0fb4c70886fb1c75bcc5d6d9252cfa7ca1a29b2f81824540c49b8a456b80
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -300,7 +333,7 @@ entries:
     version: 3.0.0-516
   - apiVersion: v2
     appVersion: 3.0.0-515
-    created: "2025-06-20T00:57:26.503256562-07:00"
+    created: "2025-06-22T23:52:53.419965756-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 8877d62beb028a4e4af91ace43ce135afe81617eabf0e5689b1c670d0de0778d
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -311,7 +344,7 @@ entries:
     version: 3.0.0-515
   - apiVersion: v2
     appVersion: 3.0.0-514
-    created: "2025-06-20T00:57:26.502532792-07:00"
+    created: "2025-06-22T23:52:53.419205483-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 811e303742bc49d4574c3f1a94091bd7d6d885a926a7a782b5964de7de5a0844
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -322,7 +355,7 @@ entries:
     version: 3.0.0-514
   - apiVersion: v2
     appVersion: 3.0.0-513
-    created: "2025-06-20T00:57:26.501664683-07:00"
+    created: "2025-06-22T23:52:53.418907418-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: c5edc797d2a046fe4085dd3263b52c2429f132288a5f49fd74b98dc1738b24a1
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -333,7 +366,7 @@ entries:
     version: 3.0.0-513
   - apiVersion: v2
     appVersion: 3.0.0-512
-    created: "2025-06-20T00:57:26.500702802-07:00"
+    created: "2025-06-22T23:52:53.418623816-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: a4191fc62de27bfc4282e6738845c1e6ad91b65be775ad8281c54d172f7342dc
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -344,7 +377,7 @@ entries:
     version: 3.0.0-512
   - apiVersion: v2
     appVersion: 3.0.0-511
-    created: "2025-06-20T00:57:26.499613276-07:00"
+    created: "2025-06-22T23:52:53.418357032-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: dd3975ceaac517db692d58f403f07a59c41badd63c103bd476b8af8d3bcc563f
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -355,7 +388,7 @@ entries:
     version: 3.0.0-511
   - apiVersion: v2
     appVersion: 3.0.0-510
-    created: "2025-06-20T00:57:26.498723974-07:00"
+    created: "2025-06-22T23:52:53.418088856-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: dcee3414b36c45241e11c1315b8e29a52f9c48bc0c0bd9998a0eb58499c2dc67
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -366,7 +399,7 @@ entries:
     version: 3.0.0-510
   - apiVersion: v2
     appVersion: 3.0.0-509
-    created: "2025-06-20T00:57:26.497502936-07:00"
+    created: "2025-06-22T23:52:53.417817226-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: e9703bc2c2622328245b52e77b7631b72413bbd5e86724bf7a5ee7f8638f210a
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -377,7 +410,7 @@ entries:
     version: 3.0.0-509
   - apiVersion: v2
     appVersion: 3.0.0-508
-    created: "2025-06-20T00:57:26.495715766-07:00"
+    created: "2025-06-22T23:52:53.417546612-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: f7fbb5cef99879247c7e8e08a4d272d44d38bd16fa2ba01cd04f33e5d160ce8f
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -388,7 +421,7 @@ entries:
     version: 3.0.0-508
   - apiVersion: v2
     appVersion: 3.0.0-507
-    created: "2025-06-20T00:57:26.495010479-07:00"
+    created: "2025-06-22T23:52:53.417272572-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 4cb9a4190c88e37487fcbdb104832325cf819f5d50770b5a7b9235a01dee5aa9
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -399,7 +432,7 @@ entries:
     version: 3.0.0-507
   - apiVersion: v2
     appVersion: 3.0.0-506
-    created: "2025-06-20T00:57:26.494308487-07:00"
+    created: "2025-06-22T23:52:53.416998597-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: f3deb4379f5e56ea8d9842317e49b5296802d9ba1336c0cef926ad00eeedc987
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -410,7 +443,7 @@ entries:
     version: 3.0.0-506
   - apiVersion: v2
     appVersion: 3.0.0-505
-    created: "2025-06-20T00:57:26.493643182-07:00"
+    created: "2025-06-22T23:52:53.416717129-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 506ed7f9309f739c9cd81eefce52e64bcbdb18315f537df9bfaec57e86294679
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -421,7 +454,7 @@ entries:
     version: 3.0.0-505
   - apiVersion: v2
     appVersion: 3.0.0-504
-    created: "2025-06-20T00:57:26.492980132-07:00"
+    created: "2025-06-22T23:52:53.416421269-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 6d262f80e67759981ae89ff754d571b8507b9af0783a6a15c17620ee8bc362e9
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -432,7 +465,7 @@ entries:
     version: 3.0.0-504
   - apiVersion: v2
     appVersion: 3.0.0-503
-    created: "2025-06-20T00:57:26.492337724-07:00"
+    created: "2025-06-22T23:52:53.416134729-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: b4b4f42e583960838e1725c39ab9d2fa1e50d9e4fae4d005bd310745e71b82b8
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -443,7 +476,7 @@ entries:
     version: 3.0.0-503
   - apiVersion: v2
     appVersion: 3.0.0-502
-    created: "2025-06-20T00:57:26.491562673-07:00"
+    created: "2025-06-22T23:52:53.415865204-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: e37ed516fe5a5802976f67b689b8aeb65fd642a36c18d35fd8525602db75d7f3
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -454,7 +487,7 @@ entries:
     version: 3.0.0-502
   - apiVersion: v2
     appVersion: 3.0.0-501
-    created: "2025-06-20T00:57:26.490629553-07:00"
+    created: "2025-06-22T23:52:53.415589044-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 8201d2ecdfc4788ed3096b2c042118bd96467c9a945b83166cf00d12b4bc614d
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -465,7 +498,7 @@ entries:
     version: 3.0.0-501
   - apiVersion: v2
     appVersion: 3.0.0-500
-    created: "2025-06-20T00:57:26.48980588-07:00"
+    created: "2025-06-22T23:52:53.415309712-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: ae145ffffec5bca751e2f9d5a0eac816d4a1cd36b69f97fd03897bf8a832fae1
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -476,7 +509,7 @@ entries:
     version: 3.0.0-500
   - apiVersion: v2
     appVersion: 2.0.3-608
-    created: "2025-06-20T00:57:26.488962174-07:00"
+    created: "2025-06-22T23:52:53.415011084-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 62c812d182e52300925449ebd34059171fc9c0d035213617b7e03b4a5f87d0b0
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -487,7 +520,7 @@ entries:
     version: 2.0.3-608
   - apiVersion: v2
     appVersion: 2.0.3-607
-    created: "2025-06-20T00:57:26.488210096-07:00"
+    created: "2025-06-22T23:52:53.414644924-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 49018897dad4623ea06fb9d4ead601af10fd23076853d063998236f8185d56ac
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -498,7 +531,7 @@ entries:
     version: 2.0.3-607
   - apiVersion: v2
     appVersion: 2.0.3-606
-    created: "2025-06-20T00:57:26.487466824-07:00"
+    created: "2025-06-22T23:52:53.414194803-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 3b03eabc5b2947b247351ebaff20dafb0de5723cd4da3a5e916f39efe5834eb1
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -509,7 +542,7 @@ entries:
     version: 2.0.3-606
   - apiVersion: v2
     appVersion: 2.0.3-605
-    created: "2025-06-20T00:57:26.486764551-07:00"
+    created: "2025-06-22T23:52:53.413696938-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 55969711c82cff2bee1924a7b6ddbdb751f4b7d41692e7fc8bcecc539736c875
     kubeVersion: '>= 1.19.8-0, <= 1.32-0'
@@ -520,7 +553,7 @@ entries:
     version: 2.0.3-605
   - apiVersion: v2
     appVersion: 2.0.3-603
-    created: "2025-06-20T00:57:26.486109551-07:00"
+    created: "2025-06-22T23:52:53.413198339-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 03a860c6177ef3748b4df32e84fb48650554d1e30dd0424d6e81095687d24ce8
     kubeVersion: '>= 1.19.8-0, <= 1.31-0'
@@ -531,7 +564,7 @@ entries:
     version: 2.0.3-603
   - apiVersion: v2
     appVersion: 2.0.3-602
-    created: "2025-06-20T00:57:26.485530239-07:00"
+    created: "2025-06-22T23:52:53.412997062-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 7e87e1d54baf58ca7df43343295066a3286a32c295c8bcb5599ab8b7f64b34a5
     kubeVersion: '>= 1.19.8-0, <= 1.31-0'
@@ -542,7 +575,7 @@ entries:
     version: 2.0.3-602
   - apiVersion: v2
     appVersion: 2.0.3-601
-    created: "2025-06-20T00:57:26.484956853-07:00"
+    created: "2025-06-22T23:52:53.412783414-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 7d3a38a7fa9c44690d278dd88228d46fff707b2b7332f6178665e3a09eb2a4c4
     kubeVersion: '>= 1.19.8-0, <= 1.31-0'
@@ -553,7 +586,7 @@ entries:
     version: 2.0.3-601
   - apiVersion: v2
     appVersion: 2.0.3-600
-    created: "2025-06-20T00:57:26.484407717-07:00"
+    created: "2025-06-22T23:52:53.412574088-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: aaba10dff6553e88f9b230f2c71d824c8cae037cf4ac13b7ac97f56504e3b3f2
     kubeVersion: '>= 1.19.8-0, <= 1.31-0'
@@ -564,7 +597,7 @@ entries:
     version: 2.0.3-600
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2025-06-20T00:57:26.483857006-07:00"
+    created: "2025-06-22T23:52:53.412364148-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 55676629a6ca96e5b740e46a0489566ae6571dd7bfa5c1070aebfd36e24a5117
     kubeVersion: '>= 1.19.8-0, <= 1.28-0'
@@ -575,7 +608,7 @@ entries:
     version: 2.0.1
   - apiVersion: v2
     appVersion: 2.0.0
-    created: "2025-06-20T00:57:26.483293323-07:00"
+    created: "2025-06-22T23:52:53.412154545-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 82c6439541f4182ad4a19094e2ed0d41bca903de345ab0102b22735ff4e35cbc
     kubeVersion: '>= 1.19.8-0, <= 1.27-0'
@@ -586,7 +619,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 1.0.2
-    created: "2025-06-20T00:57:26.482981455-07:00"
+    created: "2025-06-22T23:52:53.411941736-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 909e43e988491ffbc1c28362e6b2a363c1a4dc04b2eee541922fa4c4ee2cc855
     kubeVersion: '>= 1.19.8-0, <= 1.27-0'
@@ -597,7 +630,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.1
-    created: "2025-06-20T00:57:26.482603571-07:00"
+    created: "2025-06-22T23:52:53.411752159-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 2f44ff7c32e02347063885d524d658f946dcccf5b738e9c255825b17e89aaf74
     kubeVersion: '>= 1.19.8-0, <= 1.24-0'
@@ -608,7 +641,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-06-20T00:57:26.482168308-07:00"
+    created: "2025-06-22T23:52:53.411561975-07:00"
     description: A Helm chart for FortiADC Ingress Controller
     digest: 61d443ca6fd89bb47d156a34c7d19d3a9654bf18736631e3ba340cdf4724a0ce
     kubeVersion: '>= 1.19.8-0, <= 1.23-0'
@@ -617,4 +650,4 @@ entries:
     urls:
     - https://github.com/YuTingLais/fortiadc-kubernetes-controller/raw/main/docs/fadc-k8s-ctrl-1.0.0.tgz
     version: 1.0.0
-generated: "2025-06-20T00:57:26.481597796-07:00"
+generated: "2025-06-22T23:52:53.411264095-07:00"

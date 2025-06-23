@@ -138,7 +138,6 @@ spec:
                         required:
                           - service
                           - servicePort
-                          - serviceNamespace
                         properties:
                           service:
                             type: string
