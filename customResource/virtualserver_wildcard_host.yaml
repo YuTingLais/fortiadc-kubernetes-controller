@@ -1,0 +1,49 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: VirtualServer
+metadata:
+  name: wildcard-host-virtualserver
+  annotations: {
+    "fortiadc-ip" : "172.23.133.110",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+  labels:
+    fadcr: "true"
+spec:
+  addressType: ipv4
+  address: 192.168.1.102
+  port: 443
+  interface: port1
+  loadBalanceProfile: LB_PROF_HTTPS
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  wafProfile: High-Level-Security 
+  captchaProfile: LB_CAPTCHA_PROFILE_DEFAULT
+  avProfile: Antivirus-Profile
+  trafficGroup: default
+  fortiview: enable
+  trafficLog: enable
+  wccp: disable
+  fortigslbPublicIpType: ipv4
+  fortigslbPublicAddress: 203.0.113.1
+  fortigslbOneClick: enable
+  fortigslbHostName: samplehost
+  fortigslbDomainName: example.com.
+  contentRoutings:
+    - name: route1
+      host: "foo.bar.com"
+      path: /info
+      pathType: Prefix
+      RealServerPool:
+        service: service1
+        servicePort: 1241
+        serviceNamespace: default
+    - name: route2
+      host: "*.foo.com"
+      path: /hello
+      pathType: Prefix
+      RealServerPool:
+        service: service2
+        servicePort: 1242
+        serviceNamespace: default
+  vdom: root

@@ -1,0 +1,78 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: VirtualServer
+metadata:
+  name: tls-san-virtualserver
+  annotations: {
+    "fortiadc-ip" : "172.23.133.110",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  addressType: ipv4
+  address: 192.168.1.100
+  port: 443
+  interface: port1
+  loadBalanceProfile: LB_PROF_HTTPS
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  wafProfile: High-Level-Security
+  captchaProfile: LB_CAPTCHA_PROFILE_DEFAULT
+  avProfile: Antivirus-Profile
+  trafficGroup: default
+  fortiview: enable
+  trafficLog: enable
+  wccp: disable
+  fortigslbPublicIpType: ipv4
+  fortigslbPublicAddress: 203.0.113.1
+  fortigslbOneClick: enable
+  fortigslbHostName: samplehost
+  fortigslbDomainName: example.com.
+  contentRoutings:
+    - name: default-route
+      host: a.foo.com
+      path: /
+      pathType: Prefix
+      RealServerPool:
+        service: default-http-backend
+        servicePort: 80
+        serviceNamespace: default
+    - name: route1
+      host: b.foo.com
+      path: /env
+      pathType: Exact
+      RealServerPool:
+        service: service1
+        servicePort: 1241
+        serviceNamespace: default
+    - name: route2
+      host: c.foo.com
+      path: /info
+      pathType: Prefix
+      RealServerPool:
+        service: service1
+        servicePort: 1241
+        serviceNamespace: default
+    - name: route3
+      host: https-example.foo.com
+      path: /hello
+      pathType: Prefix
+      RealServerPool:
+        service: service2
+        servicePort: 1242
+        serviceNamespace: default
+  natSourcePoolList:
+    - name: nat-pool-1
+      addressType: ipv4
+      interface: port2
+      addressMinimum: 10.0.0.1
+      addressMaximum: 10.0.0.128
+  tls:
+    - hosts:
+        - a.foo.com
+        - b.foo.com
+        - c.foo.com
+      secretName: tls-foo
+    - hosts:
+        - https-example.foo.com
+      secretName: testsecret-tls
+  vdom: root
