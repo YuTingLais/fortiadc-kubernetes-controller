@@ -31,7 +31,7 @@ spec:
   fortigslbDomainName: example.com.
   contentRoutings:
     - name: route1
-      host: app.example.com
+      host: test.com
       path: /info
       pathType: Prefix
       RealServerPool:
@@ -39,7 +39,7 @@ spec:
         servicePort: 1241
         serviceNamespace: default
     - name: route2
-      host: app.example.com
+      host: test.com
       path: /hello
       pathType: Prefix
       RealServerPool:

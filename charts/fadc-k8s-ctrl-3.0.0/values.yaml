@@ -1,7 +1,7 @@
 # Default values for fadc-k8s-ctrl.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-# FortiADC Ingress Controller image from Dockerhub.com
+# FortiADC Kubernetes Controller image from Dockerhub.com
 image:
   repository: fortinet/fortiadc-ingress
   pullPolicy: IfNotPresent

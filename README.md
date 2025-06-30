@@ -1,29 +1,29 @@
 
-# Fortiadc Ingress Controller
-Below content is the basic know-how and quick start for FortiADC Ingress Controller.
+# Fortiadc Kubernetes Controller
+Below content is the basic know-how and quick start for FortiADC Kubernetes Controller.
 For more much details, please refer to the official document.
 
- - [FortiADC Ingress Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-kubernetes-deployment-guide/518751/prerequisite-knowledge)
- - [FortiADC Ingress Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-openshift-deployment-guide/518751/prerequisite-knowledge)
+ - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-kubernetes-deployment-guide/518751/prerequisite-knowledge)
+ - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-openshift-deployment-guide/518751/prerequisite-knowledge)
 
 </br>
 </br>
 </br>
 
-![FortiADC Ingress Controller Overview](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/fadc-ingress-controller-overview.png?raw=true)
+![FortiADC Kubernetes Controller Overview](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fadc-k8s-controller-overview.png?raw=true)
 
-The FortiADC Ingress Controller fulfills the Kubernetes Ingress resources and allows you to manage FortiADC objects from Kubernetes. It is deployed in a container of a pod in a Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Ingress Controller: 
+The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Ingress Controller: 
 
- - To list and watch Ingress related resources, such as Ingress, Service, Node and Secret. 
- - To convert Ingress related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
- - To handle Add/Update/Delete events for watched Ingress resources and automatically implement corresponding actions on FortiADC.
+ - To list and watch Ingress/custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node and Secret. 
+ - To convert Ingress/Fortinet-defined VirtualServer related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
+ - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined VirtualServer resources and automatically implement corresponding actions on FortiADC.
  
  
- ![Ingress](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/ingress.png?raw=true)
+ ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/ingress.png?raw=true)
 
 Ingress is a Kubernetes object that manages the external access to services in a Kubernetes cluster (typically HTTP/HTTPS). Ingress may provide load-balancing, SSL termination and name-based virtual hosting.
 
-The FortiADC Ingress Controller combines the capabilities of an Ingress resource with the Ingress-managed load balancer, FortiADC. 
+The FortiADC Kubernetes Controller combines the capabilities of an Ingress resource with the Ingress-managed load balancer, FortiADC. 
 
 FortiADC, as the Ingress-managed load balancer, not only provides flexibility in load-balancing, but also guarantees more security with features such as the Web Application Firewall (WAF), Antivirus Scanning, and Denial of Service (DoS) prevention to protect the web server resources in the Kubernetes cluster. Other features such as health check, traffic log management, and FortiView on FortiADC facilitates the management of the Kubernetes ingress resources.
 
@@ -33,7 +33,7 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=7>Version</th>
+            <th colspan=8>Version</th>
         </tr>
     </thead>
     <tbody>
@@ -46,6 +46,7 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
             <td>2.0.1</td>
             <td>2.0.2</td>
             <td>2.0.3</td>
+	    <td>3.0.0</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
@@ -55,28 +56,29 @@ FortiADC, as the Ingress-managed load balancer, not only provides flexibility in
             <td>1.19.8-1.28.x</td>
             <td>1.19.8-1.30.x</td>
             <td>1.19.8-1.32.x</td>
+	    <td>1.19.8-1.33.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=7>5.4.5 - 7.6.x*</td>
+            <td colspan=8>5.4.5 - 8.x.x*</td>
         </tr>
 	    <tr>
             <td>Openshift Container platform</td>
             <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=2> 4.13-4.15.x</td>
+            <td colspan=3> 4.13-4.15.x</td>
         </tr>
     </tbody>
 </table>
 
 >[!NOTE]
->Some features for FortiADC Ingress Controller version >= 2.0.0 require FortiADC version >= 7.4.0 to support. Please check the [release notes](https://github.com/fortinet/fortiadc-ingress/blob/main/Release-Notes.md).
+>Some features for FortiADC Kubernetes Controller version >= 2.0.0 require FortiADC version >= 7.4.0 to support. Please check the [release notes](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/Release-Notes.md).
 
 >[!WARNING]
->When using FortiADC Ingress Controller 2.0.x, the Ingress related objects on FortiADC (including virtual servers, content routing, real server pools, and real servers) will be fully managed by the Ingress Controller. This means that any virtual server, content routing, real server pool or real server object that is not deployed by FortiADC Ingress Controller will be removed automatically.
+>When using FortiADC Kubernetes Controller 2.0.x, the Ingress related objects on FortiADC (including virtual servers, content routing, real server pools, and real servers) will be fully managed by the Ingress Controller. This means that any virtual server, content routing, real server pool or real server object that is not deployed by FortiADC Ingress Controller will be removed automatically.
 
 ## Supported Environment
-The FortiADC Ingress Controller has been verified to run in the Openshift Cluster in Openshift Container Platform environment and Kubernetes cluster in the below environments:
+The FortiADC Kubernetes Controller has been verified to run in the Openshift Cluster in Openshift Container Platform environment and Kubernetes cluster in the below environments:
 | Environment | Tools for Building |
 |--|--|
 | Private Cloud | kubeadm, minikube, microk8s |
@@ -84,7 +86,7 @@ The FortiADC Ingress Controller has been verified to run in the Openshift Cluste
 
 ## The Kubernetes API Version
 
-To ensure you use an API version of Kubernetes objects that the FortiADC Ingress Controller supports, you can use the kubectl command to check the resource API version.
+To ensure you use an API version of Kubernetes objects that the FortiADC Kubernetes Controller supports, you can use the kubectl command to check the resource API version.
 
 
     for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
@@ -107,34 +109,35 @@ To ensure you use an API version of Kubernetes objects that the FortiADC Ingress
 |Role  | rbac.authorization.k8s.io/v1 |
 
 # Installation
-Install the FortiADC Ingress Controller using Helm Charts.
+Install the FortiADC Kubernetes Controller using Helm Charts.
 
 :bulb: Currently, only Helm 3 (version 3.6.3 or later) is supported.
 
-Helm Charts ease the installation of the FortiADC Ingress Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Ingress Controller can be deployed in one simple command. 
+Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Ingress Controller can be deployed in one simple command. 
 
-The Kubernetes objects required for the FortiADC Ingress Controller are listed below:
+The Kubernetes objects required for the FortiADC Kubernetes Controller are listed below:
 
 |Kubernetes object| Description |
 |--|--|
-| Deployment | By configuring the replica and pod template in the Kubernetes deployment, the deployment ensures the FortiADC Ingress Controller provides a non-terminated service. |
-| Service Account | The service account is used in the FortiADC Ingress Controller. |
+| Deployment | By configuring the replica and pod template in the Kubernetes deployment, the deployment ensures the FortiADC Kubernetes Controller provides a non-terminated service. |
+| Service Account | The service account is used in the FortiADC Kubernetes Controller. |
 | Cluster Role | A cluster role defines the permission on the Kubernetes cluster-scoped Ingress-related objects |
-| Cluster Role Binding |The cluster role is bound to the service account used for the FortiADC Ingress Controller, allowing the FortiADC Ingress Controller to access and operate the Kubernetes cluster-scoped Ingress-related objects. |
-| Ingress Class |The IngressClass "fadc-ingress-controller" is created for the FortiADC Ingress Controller to identify the Ingress resource. If the Ingress is defined with the IngressClass "fadc-ingress-controller", the FortiADC Ingress Controller will manage this Ingress resource. |
+| Cluster Role Binding |The cluster role is bound to the service account used for the FortiADC Kubernetes Controller, allowing the FortiADC Kubernetes Controller to access and operate the Kubernetes cluster-scoped Ingress-related and Fortinet-defined custom resources related objects. |
+| Ingress Class |The IngressClass "fadc-ingress-controller" is created for the FortiADC Kubernetes Controller to identify the Ingress resource. If the Ingress is defined with the IngressClass "fadc-ingress-controller", the FortiADC Kubernetes Controller will manage this Ingress resource. |
+| CustomResourceDefinition |The CustomResourceDefinition “VirtualServer” defines advanced HTTP routing in Kubernetes. It enhances the standard Ingress by supporting multiple upstreams, precise path routing and delegation, Traffic splitting and advanced actions, and native integration with FortiADC virtualserver features (WAF, Fortiview, etc.) | 
 
 To get the verbose output, add --debug option for all the Helm commands.
 
 ## Get Repo Information
    
 
-    helm repo add fortiadc-ingress-controller https://fortinet.github.io/fortiadc-ingress/
+    helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
 
     helm repo update
 
 ## Install FortiADC Ingress Controller
 
-    helm install first-release --namespace fortiadc-ingress --create-namespace --wait fortiadc-ingress-controller/fadc-k8s-ctrl
+    helm install first-release --namespace fortiadc-ingress --create-namespace --wait fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
 ## Check the installation
 
@@ -144,14 +147,23 @@ To get the verbose output, add --debug option for all the Helm commands.
     
     kubectl get -n fortiadc-ingress pods
 
-Check the log of the FortiADC Ingress Controller.
+Check the log of the FortiADC Kubernetes Controller.
 
     kubectl logs -n fortiadc-ingress -f [pod name]
  
 ## Upgrading chart
 
     helm repo update
-    helm upgrade --reset-values -n fortiadc-ingress first-release fortiadc-ingress-controller/fadc-k8s-ctrl
+    helm upgrade --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
+
+>[!WARNING]
+>Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
+
+	helm repo remove fortiadc-ingress
+	helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc kubernetes-controller/
+	helm repo update
+
+
 
 ## Uninstall Chart
 
@@ -160,18 +172,18 @@ Check the log of the FortiADC Ingress Controller.
 # Configuration parameters
 ## FortiADC Authentication Secret
 
-As shown in above figure, the FortiADC Ingress Controller satisfies an Ingress by FortiADC REST API call, so the authentication parameters of the FortiADC must be known to the FortiADC Ingress Controller.
+As shown in above figure, the FortiADC Kubernetes Controller satisfies an Ingress by FortiADC REST API call, so the authentication parameters of the FortiADC must be known to the FortiADC Kubernetes Controller.
 
 To preserve the authentication securely on the Kubernetes cluster, you can save it with the Kubernetes secret. For example
 
     kubectl create secret generic fad-login -n [namespace] --from-literal=username=admin --from-literal=password=[admin password]
 
-The secret is named fad-login. This value will be specified in the Ingress annotation "fortiadc-login" for the FortiADC Ingress Controller to get permission access on the FortiADC.
+The secret is named fad-login. This value will be specified in the Ingress annotation "fortiadc-login" for the FortiADC Kubernetes Controller to get permission access on the FortiADC.
 
 :warning:  The namespace of the authentication secret must be the same as the Ingress which references this authentication secret.
 
 ## Annotation in Ingress
-Configuration parameters are required to be specified in the Ingress annotation to enable the FortiADC Ingress Controller to determine how to deploy the Ingress resource.
+Configuration parameters are required to be specified in the Ingress annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the Ingress resource.
 
 |Parameter  | Description | Default |
 |--|--|--|
@@ -179,7 +191,7 @@ Configuration parameters are required to be specified in the Ingress annotation 
 | fortiadc-admin-port | FortiADC https service port. | 443|
 | fortiadc-login | The Kubernetes secret name preserves the FortiADC authentication information. <br> **Note**: This parameter is **required**. | |
 | fortiadc-vdom | Specify which VDOM to deploy the Ingress resource if vdom is enabled on FortiADC. |root |
-| fortiadc-ctrl-log | Enable/disable the FortiADC Ingress Controller log. Once enabled, the FortiADC Ingress Controller will print the verbose log the next time the Ingress is updated. |enable |
+| fortiadc-ctrl-log | Enable/disable the FortiADC Kubernetes Controller log. Once enabled, the FortiADC Kubernetes Controller will print the verbose log the next time the Ingress is updated. |enable |
 | virtual-server-ip | The virtual server IP of the virtual server to be configured on the FortiADC. This IP will be used as the address of the Ingress. <br> **Note**: This parameter is **required**. | |
 | virtual-server-interface | The FortiADC network interface for the client to access the virtual server. <br> **Note**: This parameter is **required**. | |
 | virtual-server-port | Default is 80. <br> If TLS is specified in the Ingress, then the default is 443.|80 for HTTP service.<br> 443 for HTTPS service. |
@@ -202,6 +214,16 @@ Configuration parameters are required to be specified in the Ingress annotation 
 | virtual-server-fortigslb-hostname | The **Host Name** option is available if **One Click GSLB Server** is enabled. Enter the hostname part of the FQDN, such as `www`. **Note:** You can specify the @ symbol to denote the zone root. The value substitute for @ is the preceding $ORIGIN directive. | |
 | virtual-server-fortigslb-domainname | The **Domain Name** option is available if **One Click GSLB Server** is enabled. The domain name must end with a period. For example,`example.com.` | |
 
+## Annotation in VirtualServer
+Configuration parameters are required to be specified in the VirtualServer annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the VirtualServer resource.
+
+|Parameter  | Description | Default |
+|--|--|--|
+| fortiadc-ip | The VirtualServer will be deployed on the FortiADC with the given IP address or domain name. <br> **Note**: This parameter is **required**. | |
+| fortiadc-admin-port | FortiADC https service port. | 443|
+| fortiadc-login | The Kubernetes secret name preserves the FortiADC authentication information. <br> **Note**: This parameter is **required**. | |
+| fortiadc-ctrl-log | Enable/disable the FortiADC Kubernetes Controller log. Once enabled, the FortiADC Kubernetes Controller will print the verbose log the next time the VirtualServer is updated. |enable |
+
 ## Annotation in Service
 
 >**Warning**
@@ -215,9 +237,9 @@ Configuration parameters are required to be specified in the Ingress annotation 
 | real-server-ssl-profile| Specify the real server SSL profile name. Real server profiles determine settings for communication between FortiADC and the backend real servers. The default is NONE, which is applicable for non-SSL traffic. For more details, see the FortiADC Handbook on SSL profiles. |NONE|
 |overlay_tunnel|Overlay tunnel name. Used for service with ClusterIP type||
 
-# Deployment of a Simple-fanout Ingress Example
+# Deployment of a Simple-fanout Ingress/VirtualServer Example
 
-![Simple-fanout example](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/simple-fanout.png?raw=true)
+![Simple-fanout example](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/simple-fanout.png?raw=true)
 
 In this example, the client can access service1 with the URL https://test.com/info and access service2 with the
 URL https://test.com/hello.
@@ -229,33 +251,41 @@ Services are deployed under the namespace default.
 
 Service1:
 
-    kubectl apply -f https://raw.githubusercontent.com/fortinet/fortiadc-ingress/main/service_examples/service1.yaml
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/service1.yaml
 Service2:
 
-    kubectl apply -f https://raw.githubusercontent.com/fortinet/fortiadc-ingress/main/service_examples/service2.yaml
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/service2.yaml
 
-## Deploy the Ingress
+## Deploy the Ingress/VirtualServer
 
 Download the simple-fanout-example.yaml
 
 
-    curl -k https://raw.githubusercontent.com/fortinet/fortiadc-ingress/main/ingress_examples/simple-fanout-example.yaml -o simple-fanout-example.yaml
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/ingress_examples/simple-fanout-example.yaml -o simple-fanout-example.yaml
 
 Modify the Ingress Annotation in simple-fanout-example.yaml to accommodate to your environment, ex: fortiadc-ip, virtual-server-ip, etc.. Then deploy the ingress with kubectl command
 
     kubectl apply -f simple-fanout-example.yaml
 
+:bulb: You can use VirtualServer to replace with Ingress. 
 
+ 	 curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/virtualserver_simple_fanout.yaml -o virtualserver-simple-fanout-example.yaml
+
+
+Modify the VirtualServer Annotation in virtualserver-simple-fanout-example.yaml to accommodate to your environment, ex: fortiadc-ip, fortiadc-admin-port, etc.. Then deploy the virtualserver with kubectl command
+
+    kubectl apply -f virtualserver-simple-fanout-example.yaml
 
 Check the deployed Ingress with FortiView
 
-![fortiview_topology](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/fortiview_topology.png?raw=true)
+![fortiview_topology](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fortiview_topology.png?raw=true)
 
 Try to access https://test.com/info.
 
-![test_info](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/test_info.png?raw=true)
+![test_info](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/test_info.png?raw=true)
 
 Try to access https://test.com/hello.
 
-![nginx-demo](https://github.com/fortinet/fortiadc-ingress/blob/main/figures/nginx-demo.png?raw=true)
+![nginx-demo](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/nginx-demo.png?raw=true)
+
 
