@@ -160,7 +160,7 @@ Check the log of the FortiADC Kubernetes Controller.
 >Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
 
 	helm repo remove fortiadc-ingress
-	helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc kubernetes-controller/
+	helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
 	helm repo update
 
 
