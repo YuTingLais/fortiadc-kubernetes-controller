@@ -137,7 +137,7 @@ To get the verbose output, add --debug option for all the Helm commands.
 
 ## Install FortiADC Ingress Controller
 
-    helm install first-release --namespace fortiadc-ingress --create-namespace --wait fortiadc-kubernetes-controller/fadc-k8s-ctrl
+    helm install --devel --debug first-release --namespace fortiadc-ingress --create-namespace --wait fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
 ## Check the installation
 
@@ -154,7 +154,7 @@ Check the log of the FortiADC Kubernetes Controller.
 ## Upgrading chart
 
     helm repo update
-    helm upgrade --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
+    helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
 >[!WARNING]
 >Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
