@@ -1,5 +1,10 @@
 # FortiADC Ingress Controller Release Notes
 
+## 3.0.0
+### What's New
+1. Support Kubernetes version to 1.33
+2. Support Fortinet-defined Kubernetes Custom Resource VirtualServer
+
 
 ## 2.0.3
 ### What's New
