@@ -33,6 +33,14 @@ rules:
   - ingresses/status
   verbs:
   - update
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
 {{- if eq .Values.parameters.openshiftRouteSupport "yes" }}
 - apiGroups:
   - route.openshift.io
