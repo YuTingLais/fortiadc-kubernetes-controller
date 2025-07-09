@@ -109,7 +109,7 @@ To ensure you use an API version of Kubernetes objects that the FortiADC Kuberne
 |RoleBinding  | rbac.authorization.k8s.io/v1 |
 |Role  | rbac.authorization.k8s.io/v1 |
 
-:warning: v1 Endpoints is deprecated in kubernetes v1.33+. FortiADC Kubernetes Controller 3.0.0 uses discovery.k8s.io/v1 EndpointSlice to replace v1 Endpoint
+:warning: Starting from version 3.0.0, FortiADC Kubernetes Controller utilizes the EndpointSlice resource (discovery.k8s.io/v1) to replace the legacy Endpoints (v1) API, aligning with Kubernetes' modern service discovery mechanisms.
 
 # Installation
 Install the FortiADC Kubernetes Controller using Helm Charts.
