@@ -21,15 +21,26 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait-for-cert
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[init] Waiting for /certs/tls.crt to be ready..."
+              while [ ! -f /certs/tls.crt ]; do sleep 1; done
+              echo "[init] TLS cert ready."
+          volumeMounts:
+            - name: tls
+              mountPath: /certs
+              readOnly: true
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            - --tls-cert-file=/certs/tls.crt
-            - --tls-private-key-file=/certs/tls.key
           ports:
             - containerPort: {{ .Values.webhook.service.targetPort }}
           volumeMounts:
