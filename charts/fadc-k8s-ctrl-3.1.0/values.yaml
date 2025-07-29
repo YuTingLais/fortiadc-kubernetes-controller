@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 # FortiADC Kubernetes Controller image from Dockerhub.com
 image:
-  repository: ytlai/fortiadc-k8s-ctrl
+  repository: fortinet/fortiadc-ingress
   pullPolicy: IfNotPresent
-  tag: "3.0.0.706"
+  tag: "3.0.0"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -62,5 +62,14 @@ parameters:
   virtualServerFortiGSLB : "optional"
   openshiftRouteSupport: "no"
   enableStaticRouteSupport: "no"
-imagePullSecrets:
-  - name: regcred
+webhook:
+  service:
+    name: fad-webhook
+    port: 443
+    targetPort: 8443
+  tlsSecretName: webhook-tls
+  webhookPath: /validate
+  webhookName: address-validator.fadk8sctrl.fortinet.com
+  group: fadk8sctrl.fortinet.com
+  version: v1alpha1
+  resource: virtualservers
