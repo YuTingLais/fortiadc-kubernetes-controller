@@ -62,10 +62,6 @@ spec:
         serviceNamespace: default
   natSourcePoolList:
     - name: nat-pool-1
-      addressType: ipv4
-      interface: port2
-      addressMinimum: 10.0.0.1
-      addressMaximum: 10.0.0.128
   tls:
     - hosts:
         - a.foo.com
