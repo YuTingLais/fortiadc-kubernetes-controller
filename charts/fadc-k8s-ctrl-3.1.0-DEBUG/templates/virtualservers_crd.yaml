@@ -414,10 +414,10 @@ spec:
                   message: "When 'tls' is set, loadBalanceProfile must be 'LB_PROF_HTTPS' or 'LB_PROF_TCPS'."
 
                 - rule: "!has(self.ipsProfile) || (self.addressType == 'ipv4' && (self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP'))"
-                message: "ipsProfile can only be set when addressType is 'ipv4' and loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP'."
+                  message: "ipsProfile can only be set when addressType is 'ipv4' and loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP'."
 
                 - rule: "has(self.realServerPool) || (has(self.contentRoutings) && size(self.contentRoutings) > 0)"
-                message: "You must define either realServerPool or contentRoutings."
+                  message: "You must define either realServerPool or contentRoutings."
             status:
               type: object
               properties:
@@ -430,15 +430,15 @@ spec:
       subresources:
         status: {}
   conversion:
-  strategy: Webhook
-  webhook:
-    clientConfig:
-      service:
-        name: {{ .Values.webhook.service.name }}
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: {{ .Values.webhook.service.name }}
         namespace: {{ .Release.Namespace }}
         path: /convert
         port: {{ .Values.webhook.service.port }}
-      # cert-manager will insert ca automatically
-      caBundle: ""
-    conversionReviewVersions: ["v1"]
+          # cert-manager will insert ca automatically
+        caBundle: ""
+        conversionReviewVersions: ["v1"]
 
