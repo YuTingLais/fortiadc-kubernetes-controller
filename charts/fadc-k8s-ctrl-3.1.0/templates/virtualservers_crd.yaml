@@ -439,5 +439,5 @@ spec:
           path: /convert
           port: {{ .Values.webhook.service.port }}
           # cert-manager will insert ca automatically
-        conversionReviewVersions: ["v1"]
+      conversionReviewVersions: ["v1"]
 
