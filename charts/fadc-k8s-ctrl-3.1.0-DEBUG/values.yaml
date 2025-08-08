@@ -5,7 +5,7 @@
 image:
   repository: ytlai/fortiadc-k8s-ctrl
   pullPolicy: IfNotPresent
-  tag: "3.1.0.524"
+  tag: "3.1.0.541"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -72,7 +72,7 @@ webhook:
   webhookPath: /validate
   webhookName: address-validator.fadk8sctrl.fortinet.com
   group: fadk8sctrl.fortinet.com
-  version: v1alpha1
+  version: v1alpha2
   resource: virtualservers
 imagePullSecrets:
   - name: regcred
