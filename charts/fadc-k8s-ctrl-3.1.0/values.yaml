@@ -70,7 +70,7 @@ webhook:
     targetPort: 8443
   tlsSecretName: webhook-tls
   webhookPath: /validate
-  webhookName: address-validator.fadk8sctrl.fortinet.com
+  webhookName: validator.fadk8sctrl.fortinet.com
   group: fadk8sctrl.fortinet.com
   version: v1alpha2
   resource: virtualservers
