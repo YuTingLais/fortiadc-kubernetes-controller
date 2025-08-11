@@ -72,14 +72,14 @@ webhook:
   webhookPath: /validate
   webhookName: validator.fadk8sctrl.fortinet.com
   rules:
-    - name: validate-vs
+    - name: validate-vs.fadk8sctrl.fortinet.com
       group: fadk8sctrl.fortinet.com
       version: v1alpha2
       resources:
         - virtualservers
       scope: "Namespaced"
       path: /validate-vs
-    - name: validate-ingress
+    - name: validate-ingress.fadk8sctrl.fortinet.com
       group: networking.k8s.io
       version: v1
       resources:
