@@ -5,19 +5,26 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}
 webhooks:
-  - name: {{ .Values.webhook.webhookName }}
+{{- range .Values.webhook.rules }}
+  - name: {{ .name }}
     clientConfig:
       service:
         name: {{ .Values.webhook.service.name }}
         namespace: {{ .Release.Namespace }}
-        path: {{ .Values.webhook.webhookPath }}
+        path: {{ .path }}
         port: {{ .Values.webhook.service.port }}
     rules:
-      - apiGroups: ["{{ .Values.webhook.group }}"]
-        apiVersions: ["{{ .Values.webhook.version }}"]
+    {{- range .Values.webhook.rules }}
+      - apiGroups: ["{{ .group }}"]
+        apiVersions: ["{{ .version }}"]
         operations: ["CREATE", "UPDATE"]
-        resources: ["{{ .Values.webhook.resource }}"]
-        scope: "Namespaced"
+        resources:
+        {{- range .resources }}
+          - "{{ . }}"
+        {{- end }}
+        scope: "{{ .scope }}"
+    {{- end }}
     admissionReviewVersions: ["v1"]
     sideEffects: None
     failurePolicy: Fail
+{{- end }}

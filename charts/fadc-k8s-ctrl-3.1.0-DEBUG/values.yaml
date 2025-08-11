@@ -5,7 +5,7 @@
 image:
   repository: ytlai/fortiadc-k8s-ctrl
   pullPolicy: IfNotPresent
-  tag: "3.1.0.542"
+  tag: "3.1.0.546"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -71,8 +71,18 @@ webhook:
   tlsSecretName: webhook-tls
   webhookPath: /validate
   webhookName: validator.fadk8sctrl.fortinet.com
-  group: fadk8sctrl.fortinet.com
-  version: v1alpha2
-  resource: virtualservers
+  rules:
+    - name: validate-vs
+      group: fadk8sctrl.fortinet.com
+      version: v1alpha2
+      resources: virtualservers
+      scope: "Namespaced"
+      path: /validate-vs
+    - name: validate-ingress
+      group: networking.k8s.io
+      version: v1
+      resources: ingresses
+      scope: "Namespaced"
+      path: /validate-ingress
 imagePullSecrets:
   - name: regcred
