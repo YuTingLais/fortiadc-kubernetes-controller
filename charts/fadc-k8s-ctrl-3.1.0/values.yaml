@@ -75,12 +75,14 @@ webhook:
     - name: validate-vs
       group: fadk8sctrl.fortinet.com
       version: v1alpha2
-      resources: virtualservers
+      resources:
+        - virtualservers
       scope: "Namespaced"
       path: /validate-vs
     - name: validate-ingress
       group: networking.k8s.io
       version: v1
-      resources: ingresses
+      resources:
+        - ingresses
       scope: "Namespaced"
       path: /validate-ingress

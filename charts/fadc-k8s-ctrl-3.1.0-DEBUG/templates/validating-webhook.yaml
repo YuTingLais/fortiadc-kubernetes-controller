@@ -9,12 +9,11 @@ webhooks:
   - name: {{ .name }}
     clientConfig:
       service:
-        name: {{ .Values.webhook.service.name }}
-        namespace: {{ .Release.Namespace }}
+        name: {{ $.Values.webhook.service.name }}
+        namespace: {{ $.Release.Namespace }}
         path: {{ .path }}
-        port: {{ .Values.webhook.service.port }}
+        port: {{ $.Values.webhook.service.port }}
     rules:
-    {{- range .Values.webhook.rules }}
       - apiGroups: ["{{ .group }}"]
         apiVersions: ["{{ .version }}"]
         operations: ["CREATE", "UPDATE"]
@@ -23,7 +22,6 @@ webhooks:
           - "{{ . }}"
         {{- end }}
         scope: "{{ .scope }}"
-    {{- end }}
     admissionReviewVersions: ["v1"]
     sideEffects: None
     failurePolicy: Fail
