@@ -342,6 +342,17 @@ spec:
                       name:
                         type: string
                         pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                      type:
+                        type: string
+                        enum: ["l4-content-routing", "l7-content-routing"]
+                        default: "l7-content-routing"
+                      sourceAddressType:
+                        type: string
+                        enum: [ ipv4, ipv6 ]
+                        default: ipv4
+                      sourceAddress:
+                        type: string
+                        default: 0.0.0.0/0
                       host:
                         type: string
                         pattern: '^(\*\.)?([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'
@@ -415,9 +426,13 @@ spec:
 
                 - rule: "!has(self.ipsProfile) || (self.addressType == 'ipv4' && (self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP'))"
                   message: "ipsProfile can only be set when addressType is 'ipv4' and loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP'."
+                - rule: "(has(self.realServerPool) && !has(self.contentRoutings)) || (!has(self.realServerPool) && has(self.contentRoutings))"
+                  message: "You must define either realServerPool or contentRoutings, but not both."
+                - rule: "self.loadBalanceProfile == 'LB_PROF_TCPS' ? !has(self.contentRoutings) : true"
+                  message: "When loadBalanceProfile is 'LB_PROF_TCPS', 'contentRoutings' must not be set."
 
-                - rule: "has(self.realServerPool) || (has(self.contentRoutings) && size(self.contentRoutings) > 0)"
-                  message: "You must define either realServerPool or contentRoutings."
+                - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? !has(self.tls) : true"
+                  message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'tls' must not be set."
             status:
               type: object
               properties:
