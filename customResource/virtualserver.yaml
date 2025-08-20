@@ -19,7 +19,7 @@ spec:
     - name: default_route
       path: /
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: default-http-backend
         servicePort: 80
         serviceNamespace: default
