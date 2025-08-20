@@ -17,7 +17,7 @@ spec:
   loadBalanceMethod: LB_METHOD_ROUND_ROBIN
   contentRoutings:
     - name: default_route
-      RealServerPool:
+      realServerPool:
         service: default-http-backend
         servicePort: 80
         serviceNamespace: default

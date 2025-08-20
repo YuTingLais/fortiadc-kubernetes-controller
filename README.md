@@ -3,8 +3,8 @@
 Below content is the basic know-how and quick start for FortiADC Kubernetes Controller.
 For more much details, please refer to the official document.
 
- - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-kubernetes-deployment-guide/518751/prerequisite-knowledge)
- - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/7.4.0/fortiadc-ingress-controller-openshift-deployment-guide/518751/prerequisite-knowledge)
+ - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-deployment-guide/)
+ - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-openshift-deployment-guide/)
 
 </br>
 </br>

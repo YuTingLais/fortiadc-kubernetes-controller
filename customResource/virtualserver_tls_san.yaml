@@ -32,7 +32,7 @@ spec:
       host: a.foo.com
       path: /
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: default-http-backend
         servicePort: 80
         serviceNamespace: default
@@ -40,7 +40,7 @@ spec:
       host: b.foo.com
       path: /env
       pathType: Exact
-      RealServerPool:
+      realServerPool:
         service: service1
         servicePort: 1241
         serviceNamespace: default
@@ -48,7 +48,7 @@ spec:
       host: c.foo.com
       path: /info
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: service1
         servicePort: 1241
         serviceNamespace: default
@@ -56,7 +56,7 @@ spec:
       host: https-example.foo.com
       path: /hello
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: service2
         servicePort: 1242
         serviceNamespace: default

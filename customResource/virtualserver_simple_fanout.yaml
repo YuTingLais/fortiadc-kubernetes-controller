@@ -34,7 +34,7 @@ spec:
       host: test.com
       path: /info
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: service1
         servicePort: 1241
         serviceNamespace: default
@@ -42,7 +42,7 @@ spec:
       host: test.com
       path: /hello
       pathType: Prefix
-      RealServerPool:
+      realServerPool:
         service: service2
         servicePort: 1242
         serviceNamespace: default

@@ -121,7 +121,7 @@ spec:
                     type: object
                     required:
                       - name
-                      - RealServerPool
+                      - realServerPool
                     properties:
                       name:
                         type: string
@@ -135,7 +135,7 @@ spec:
                       pathType:
                         type: string
                         enum: ["Exact", "Prefix"]
-                      RealServerPool:
+                      realServerPool:
                         type: object
                         required:
                           - service

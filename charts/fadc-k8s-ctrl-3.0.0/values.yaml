@@ -19,15 +19,7 @@ podAnnotations: {}
 
 podSecurityContext: {}
 
-securityContext:
-  capabilities:
-    drop:
-      - ALL
-  runAsNonRoot: true
-  runAsUser: 999
-  allowPrivilegeEscalation: false
-  seccompProfile:
-    type: RuntimeDefault
+securityContext: {}
 
 nodeSelector: {}
 
@@ -43,7 +35,7 @@ tolerations:
 
 affinity: {}
 
-# Define Ingress Class for FortiADC Ingress Controller
+# Define Ingress Class for FortiADC Kubernetes Controller
 controller:
   ingressClassResource:
     name: "fadc-ingress-controller"
@@ -51,7 +43,7 @@ controller:
     default: true
     controllerValue: "fortinet.com/fadc-ingress-controller"
 # You can decide parameters defined in annotation of Ingress to be optional or mandatory.
-# FortiADC Ingress Controller will check the parameter if it marks mandatory.
+# FortiADC Kubernetes Controller will check the parameter if it marks mandatory.
 parameters:
   virtualServerNatSrcPool : "optional"
   virtualServerWafProfile : "optional"
