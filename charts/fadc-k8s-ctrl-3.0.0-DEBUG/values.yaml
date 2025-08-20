@@ -5,7 +5,7 @@
 image:
   repository: ytlai/fortiadc-k8s-ctrl
   pullPolicy: IfNotPresent
-  tag: "3.0.0.905"
+  tag: "3.0.0.810"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -19,7 +19,15 @@ podAnnotations: {}
 
 podSecurityContext: {}
 
-securityContext: {}
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 999
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
 
 nodeSelector: {}
 
@@ -35,7 +43,7 @@ tolerations:
 
 affinity: {}
 
-# Define Ingress Class for FortiADC Kubernetes Controller
+# Define Ingress Class for FortiADC Ingress Controller
 controller:
   ingressClassResource:
     name: "fadc-ingress-controller"
@@ -43,7 +51,7 @@ controller:
     default: true
     controllerValue: "fortinet.com/fadc-ingress-controller"
 # You can decide parameters defined in annotation of Ingress to be optional or mandatory.
-# FortiADC Kubernetes Controller will check the parameter if it marks mandatory.
+# FortiADC Ingress Controller will check the parameter if it marks mandatory.
 parameters:
   virtualServerNatSrcPool : "optional"
   virtualServerWafProfile : "optional"

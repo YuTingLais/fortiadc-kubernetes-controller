@@ -1,0 +1,21 @@
+{{- if .Values.webhook.useCertManager }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-cluster-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.webhook.tlsSecretName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  dnsNames:
+    - {{ .Values.webhook.service.name }}.{{ .Release.Namespace }}.svc
+  secretName: {{ .Values.webhook.tlsSecretName }}
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+{{- end }}
