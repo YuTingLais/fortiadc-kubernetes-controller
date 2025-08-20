@@ -312,8 +312,8 @@ spec:
                   pattern: '^([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\.?$'
                 packetForwardingMethod:
                   type: string
-                  enum: [ fullNAT ]
-                  default: fullNAT
+                  enum: [ FullNAT ]
+                  default: FullNAT
                 realServerPool:
                   type: object
                   required:
