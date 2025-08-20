@@ -310,10 +310,6 @@ spec:
                 fortigslbDomainName:
                   type: string
                   pattern: '^([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\.?$'
-                packetForwardingMethod:
-                  type: string
-                  enum: [ FullNAT ]
-                  default: FullNAT
                 realServerPool:
                   type: object
                   required:
@@ -433,6 +429,8 @@ spec:
 
                 - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? !has(self.tls) : true"
                   message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'tls' must not be set."
+                - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? has(self.natSourcePoolList) : true"
+                  message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'natSourcePoolList' must be set."
             status:
               type: object
               properties:
