@@ -12,7 +12,7 @@ metadata:
     fadcr: "true"
 spec:
   addressType: ipv4
-  address: 192.168.1.102
+  address: 192.168.1.105
   port: 443
   interface: port1
   loadBalanceProfile: LB_PROF_HTTPS
