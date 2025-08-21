@@ -3,7 +3,11 @@
 ## 3.0.0
 ### What's New
 1. Support Kubernetes version to 1.33
-2. Support Fortinet-defined Kubernetes Custom Resource VirtualServer
+2. Support OpenShift version to 4.19
+3. New VirtualServer Custom Resource: FortiADC Kubernetes Controller 3.0.0 introduces a new Fortinet-defined
+Kubernetes VirtualServer Custom Resource that extends the Kubernetes Ingress model to support full FortiADC
+virtual server configuration from Kubernetes manifests. This enables advanced traffic management, security
+policies, and TLS options to be applied without manual GUI or CLI configuration.
 
 
 ## 2.0.3
