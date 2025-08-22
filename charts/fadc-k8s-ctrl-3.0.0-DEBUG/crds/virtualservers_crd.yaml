@@ -2,8 +2,6 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: virtualservers.fadk8sctrl.fortinet.com
-  annotations:
-    "helm.sh/resource-policy": keep
 spec:
   preserveUnknownFields: false
   group: fadk8sctrl.fortinet.com
@@ -111,7 +109,7 @@ spec:
                   default: disable
                 fortigslbHostName:
                   type: string
-                  pattern: '^(@|\*|[A-Za-z0-9.-]*[A-Za-z0-9])$'
+                  pattern: '^([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)*([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9])$'
                 fortigslbDomainName:
                   type: string
                   pattern: '^([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\.?$'
@@ -121,7 +119,7 @@ spec:
                     type: object
                     required:
                       - name
-                      - realServerPool
+                      - RealServerPool
                     properties:
                       name:
                         type: string
@@ -135,7 +133,7 @@ spec:
                       pathType:
                         type: string
                         enum: ["Exact", "Prefix"]
-                      realServerPool:
+                      RealServerPool:
                         type: object
                         required:
                           - service

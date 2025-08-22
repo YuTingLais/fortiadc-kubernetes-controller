@@ -1,3 +1,6 @@
+{{- if and (not .Values.webhook.useCertManager) (not .Values.webhook.tlsSecretName) }}
+{{- fail "If webhook.useCertManager is false, you must provide webhook.tlsSecretName to use an existing Secret." }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,12 +28,40 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait-for-cert
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[init] Waiting for /certs/tls.crt to be ready..."
+              while [ ! -f /certs/tls.crt ]; do sleep 1; done
+              echo "[init] TLS cert ready."
+          volumeMounts:
+            - name: tls
+              mountPath: /certs
+              readOnly: true
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- if eq .Values.parameters.openshiftRouteSupport "no" }}
+            runAsUser: 999
+            {{- end }}
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.webhook.service.targetPort }}
+          volumeMounts:
+            - name: tls
+              mountPath: /certs
+              readOnly: true
           env:
           - name: VirtualServerNatSrcPool
             value: {{ .Values.parameters.virtualServerNatSrcPool }}
@@ -50,6 +81,10 @@ spec:
             value: "{{ .Values.parameters.openshiftRouteSupport }}"
           - name: EnableStaticRouteSupport
             value: "{{ .Values.parameters.enableStaticRouteSupport }}"
+      volumes:
+        - name: tls
+          secret:
+            secretName: {{ .Values.webhook.tlsSecretName }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
