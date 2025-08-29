@@ -422,8 +422,6 @@ spec:
 
                 - rule: "!has(self.ipsProfile) || (self.addressType == 'ipv4' && (self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP'))"
                   message: "ipsProfile can only be set when addressType is 'ipv4' and loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP'."
-                - rule: "(has(self.realServerPool) && !has(self.contentRoutings)) || (!has(self.realServerPool) && has(self.contentRoutings))"
-                  message: "You must define either realServerPool or contentRoutings, but not both."
                 - rule: "self.loadBalanceProfile == 'LB_PROF_TCPS' ? !has(self.contentRoutings) : true"
                   message: "When loadBalanceProfile is 'LB_PROF_TCPS', 'contentRoutings' must not be set."
 
@@ -431,6 +429,10 @@ spec:
                   message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'tls' must not be set."
                 - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? has(self.natSourcePoolList) : true"
                   message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'natSourcePoolList' must be set."
+                - rule: "has(self.realServerPool) || has(self.contentRoutings)"
+                  message: "You must define at least one of realServerPool or contentRoutings."
+                - rule: "!(has(self.realServerPool) && has(self.contentRoutings))"
+                  message: "You cannot define both realServerPool and contentRoutings at the same time."
             status:
               type: object
               properties:
