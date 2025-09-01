@@ -1,11 +1,11 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: {{ .Values.webhook.webhookName }}
+  name: {{ .Values.webhook.validatingWebhookName }}
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}
 webhooks:
-{{- range .Values.webhook.rules }}
+{{- range .Values.webhook.rules.validating }}
   - name: {{ .name }}
     clientConfig:
       service:
@@ -26,3 +26,4 @@ webhooks:
     sideEffects: None
     failurePolicy: Fail
 {{- end }}
+
