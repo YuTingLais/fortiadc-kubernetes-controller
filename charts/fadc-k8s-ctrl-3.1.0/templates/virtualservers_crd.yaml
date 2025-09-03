@@ -252,7 +252,7 @@ spec:
                   default: port1
                 loadBalanceProfile:
                   type: string
-                  enum: [ LB_PROF_HTTPS, LB_PROF_HTTP, LB_PROF_TCP, LB_PROF_TCPS, LB_PROF_UDP ]
+                  enum: [ LB_PROF_HTTPS, LB_PROF_HTTP, LB_PROF_TCP, LB_PROF_UDP ]
                   default: LB_PROF_HTTPS
                 loadBalanceMethod:
                   type: string
@@ -417,13 +417,11 @@ spec:
                   message: "When fortigslbOneClick is 'enable', both fortigslbHostName and fortigslbDomainName must be set."
                 - rule: "!has(self.fortigslbDomainName) || self.fortigslbDomainName.endsWith('.')"
                   message: "fortigslbDomainName must end with a dot ('.')."
-                - rule: "!has(self.tls) || (self.loadBalanceProfile == 'LB_PROF_HTTPS' || self.loadBalanceProfile == 'LB_PROF_TCPS')"
-                  message: "When 'tls' is set, loadBalanceProfile must be 'LB_PROF_HTTPS' or 'LB_PROF_TCPS'."
+                - rule: "!has(self.tls) || (self.loadBalanceProfile == 'LB_PROF_HTTPS')"
+                  message: "When 'tls' is set, loadBalanceProfile must be 'LB_PROF_HTTPS'."
 
                 - rule: "!has(self.ipsProfile) || (self.addressType == 'ipv4' && (self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP'))"
                   message: "ipsProfile can only be set when addressType is 'ipv4' and loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP'."
-                - rule: "self.loadBalanceProfile == 'LB_PROF_TCPS' ? !has(self.contentRoutings) : true"
-                  message: "When loadBalanceProfile is 'LB_PROF_TCPS', 'contentRoutings' must not be set."
 
                 - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? !has(self.tls) : true"
                   message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'tls' must not be set."
@@ -433,6 +431,8 @@ spec:
                   message: "You must define at least one of realServerPool or contentRoutings."
                 - rule: "!(has(self.realServerPool) && has(self.contentRoutings))"
                   message: "You cannot define both realServerPool and contentRoutings at the same time."
+                - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? has(self.natSourcePoolList) : true"
+                  message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'natSourcePoolList' must be set."
             status:
               type: object
               properties:
