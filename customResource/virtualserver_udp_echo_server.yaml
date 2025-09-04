@@ -1,0 +1,25 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha2
+kind: VirtualServer
+metadata:
+  name: udp-echo-virtualserver
+  annotations: {
+    "fortiadc-ip" : "172.23.133.110",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  addressType: ipv4
+  address: 192.168.1.107
+  port: 9999
+  interface: port3
+  loadBalanceProfile: LB_PROF_UDP
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  realServerPool:
+    service: udp-echo-service
+    servicePort: 9999
+    serviceNamespace: default
+  natSourcePoolList:
+    - name: socat
+  vdom: root
+
