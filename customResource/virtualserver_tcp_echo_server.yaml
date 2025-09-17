@@ -1,0 +1,30 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha2
+kind: VirtualServer
+metadata:
+  name: tcp-echo-virtualserver
+  annotations: {
+    "fortiadc-ip" : "172.23.133.110",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  addressType: ipv4
+  address: 192.168.1.106
+  port: 12345
+  interface: port3
+  loadBalanceProfile: LB_PROF_TCP
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  natSourcePoolList:
+    - name: socat
+  contentRoutings:
+    - name: route1
+      type: l4-content-routing
+      sourceAddressType: ipv4
+      sourceAddress: 192.168.1.0/24
+      realServerPool:
+        service: tcp-echo-service
+        servicePort: 12345
+        serviceNamespace: default
+  vdom: root
+

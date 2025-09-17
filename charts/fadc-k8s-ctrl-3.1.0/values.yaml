@@ -1,0 +1,114 @@
+# Default values for fadc-k8s-ctrl.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# FortiADC Kubernetes Controller image from Dockerhub.com
+image:
+  repository: fortinet/fortiadc-ingress
+  pullPolicy: IfNotPresent
+  tag: "3.1.0"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "fortiadc-ingress"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+nodeSelector: {}
+
+tolerations:
+  - effect: "NoExecute"
+    key: "node.kubernetes.io/not-ready"
+    operator: "Exists"
+    tolerationSeconds: 30
+  - effect: "NoExecute"
+    key: "node.kubernetes.io/unreachable"
+    operator: "Exists"
+    tolerationSeconds: 30
+
+affinity: {}
+
+# Define Ingress Class for FortiADC Kubernetes Controller
+controller:
+  ingressClassResource:
+    name: "fadc-ingress-controller"
+    enabled: true
+    default: true
+    controllerValue: "fortinet.com/fadc-ingress-controller"
+# You can decide parameters defined in annotation of Ingress to be optional or mandatory.
+# FortiADC Kubernetes Controller will check the parameter if it marks mandatory.
+parameters:
+  virtualServerNatSrcPool : "optional"
+  virtualServerWafProfile : "optional"
+  virtualServerAvProfile : "optional"
+  virtualServerDosProfile : "optional"
+  virtualServerCaptchaProfile : "optional"
+  virtualServerPersistence : "optional"
+  virtualServerFortiGSLB : "optional"
+  openshiftRouteSupport: "no"
+  enableStaticRouteSupport: "no"
+webhook:
+  useCertManager: true
+  service:
+    name: fad-webhook
+    port: 443
+    targetPort: 8443
+  tlsSecretName: webhook-tls
+  validatingWebhookName: validator.fadk8sctrl.fortinet.com
+  mutatingWebhookName: mutator.fadk8sctrl.fortinet.com
+  rules:
+    validating:
+      - name: validate-vs.fadk8sctrl.fortinet.com
+        group: fadk8sctrl.fortinet.com
+        version: v1alpha2
+        resources:
+          - virtualservers
+        scope: "Namespaced"
+        path: /validate-vs
+      - name: validate-ingress.fadk8sctrl.fortinet.com
+        group: networking.k8s.io
+        version: v1
+        resources:
+          - ingresses
+        scope: "Namespaced"
+        path: /validate-ingress
+
+    mutating:
+      - name: mutate-vs.fadk8sctrl.fortinet.com
+        group: fadk8sctrl.fortinet.com
+        version: v1alpha2
+        resources:
+          - virtualservers
+        scope: "Namespaced"
+        path: /mutate-vs
+
+#webhook:
+#  useCertManager: true
+#  service:
+#    name: fad-webhook
+#    port: 443
+#    targetPort: 8443
+#  tlsSecretName: webhook-tls
+#  webhookPath: /validate
+#  webhookName: validator.fadk8sctrl.fortinet.com
+#  rules:
+#    - name: validate-vs.fadk8sctrl.fortinet.com
+#      group: fadk8sctrl.fortinet.com
+#      version: v1alpha2
+#      resources:
+#        - virtualservers
+#      scope: "Namespaced"
+#      path: /validate-vs
+#    - name: validate-ingress.fadk8sctrl.fortinet.com
+#      group: networking.k8s.io
+#      version: v1
+#      resources:
+#        - ingresses
+#      scope: "Namespaced"
+#     path: /validate-ingress
