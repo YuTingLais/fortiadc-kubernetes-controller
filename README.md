@@ -19,13 +19,15 @@ The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress reso
  - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined VirtualServer resources and automatically implement corresponding actions on FortiADC.
  
  
- ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/ingress.png?raw=true)
+ ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fad-k8s-controller-flow.png?raw=true)
 
-Ingress is a Kubernetes object that manages the external access to services in a Kubernetes cluster (typically HTTP/HTTPS). Ingress may provide load-balancing, SSL termination and name-based virtual hosting.
+Kubernetes Ingress is an API resource that manages external access to cluster services, typically HTTP/HTTPS traffic,providing features like load balancing, SSL termination, and name-based virtual hosting.
 
-The FortiADC Kubernetes Controller combines the capabilities of an Ingress resource with the Ingress-managed load balancer, FortiADC. 
+The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification.
 
-FortiADC, as the Ingress-managed load balancer, not only provides flexibility in load-balancing, but also guarantees more security with features such as the Web Application Firewall (WAF), Antivirus Scanning, and Denial of Service (DoS) prevention to protect the web server resources in the Kubernetes cluster. Other features such as health check, traffic log management, and FortiView on FortiADC facilitates the management of the Kubernetes ingress resources.
+The FortiADC Kubernetes Controller bridges Kubernetes native routing capabilities with FortiADC’s advanced traffic management and security features such as Web Application Firewall (WAF), Antivirus Scanning, and Denial of Service (DoS) prevention to protect the web server resources in the Kubernetes cluster, enabling seamless integration of both.
+
+Other features such as health check, traffic log management, and FortiView on FortiADC facilitates the management of the Kubernetes ingress and the VirtualServer custom resources.
 
 ## Supported Release and Version
 
