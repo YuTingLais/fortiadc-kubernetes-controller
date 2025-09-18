@@ -244,7 +244,25 @@ Configuration parameters are required to be specified in the VirtualServer annot
 
 # Deployment of a Simple-fanout Ingress/VirtualServer Example
 
-![Simple-fanout example](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/simple-fanout.png?raw=true)
+ ```mermaid
+graph LR;
+  client([client])-.-> FortiADC_load_balancer["FortiADC load balancer"] .-> ingress["HTTP/HTTPS VirtualServer or Ingress, 172.23.133.6 (test.com)"];
+  ingress-->|/info|service1[Service service1:1241];
+  ingress-->|/hello|service2[Service service2:1242];
+  subgraph cluster
+    ingress;
+    service1-->pod1[Pod];
+    service1-->pod2[Pod];
+    service2-->pod3[Pod];
+    service2-->pod4[Pod];
+  end
+  classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+  classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+  classDef cluster fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+  class ingress,service1,service2,pod1,pod2,pod3,pod4 k8s;
+  class client plain;
+  class cluster cluster;
+```
 
 In this example, the client can access service1 with the URL https://test.com/info and access service2 with the
 URL https://test.com/hello.
