@@ -56,29 +56,6 @@ spec:
               readOnly: true
             - name: temp-storage
               mountPath: /apptmp
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.webhook.service.targetPort }}
-              scheme: HTTPS
-              httpHeaders:
-                - name: Host
-                  value: {{ .Values.webhook.service.name }}.{{ .Release.Namespace }}.svc
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 5
-            failureThreshold: 20
-          startupProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.webhook.service.targetPort }}
-              scheme: HTTPS
-              httpHeaders:
-                - name: Host
-                  value: {{ .Values.webhook.service.name }}.{{ .Release.Namespace }}.svc
-            periodSeconds: 5
-            failureThreshold: 60
-            timeoutSeconds: 5
           env:
           - name: VirtualServerNatSrcPool
             value: {{ .Values.parameters.virtualServerNatSrcPool }}
