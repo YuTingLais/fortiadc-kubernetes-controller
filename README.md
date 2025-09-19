@@ -21,7 +21,7 @@ The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress reso
  
  ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fad-k8s-controller-flow.png?raw=true)
 
-Kubernetes Ingress is an API resource that manages external access to cluster services, typically HTTP/HTTPS traffic,providing features like load balancing, SSL termination, and name-based virtual hosting.
+Kubernetes Ingress is an API resource that manages external access to cluster services, typically HTTP/HTTPS traffic, providing features like load balancing, SSL termination, and name-based virtual hosting.
 
 The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification.
 
