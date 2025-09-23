@@ -21,9 +21,11 @@ The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress reso
 
  ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fad-k8s-controller-flow.png?raw=true)
 
+
+
 Kubernetes Ingress is an API resource that manages external access to cluster services, typically HTTP/HTTPS traffic, providing features like load balancing, SSL termination, and name-based virtual hosting.
 
-The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification.
+The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification. Moreover, The VirtualServer custom resource version v1alpha2 supports not only Layer 7 (HTTP/HTTPS) but also Layer 4 (TCP/UDP) servers in Kubernetes.
 
 The FortiADC Kubernetes Controller bridges Kubernetes native routing capabilities with FortiADC’s advanced traffic management and security features such as Web Application Firewall (WAF), Antivirus Scanning, and Denial of Service (DoS) prevention to protect the web server resources in the Kubernetes cluster, enabling seamless integration of both.
 
@@ -125,13 +127,16 @@ Helm Charts ease the installation of the FortiADC Kubernetes Controller in the K
 To get the verbose output, add --debug option for all the Helm commands.
 
 ## Install cert-manager.io
->[!WARNING] :bangbang: Webhook server is introduced in FortiADC Kubernetes Controller 3.1,  and the cert-manager is required to offer the self-signed certificate for the TLS connection between Kubernetes API server and webhook server.
+
+>[!WARNING] 
+> :bangbang: Webhook server is introduced in FortiADC Kubernetes Controller 3.1,  and the cert-manager is required to offer the self-signed certificate for the TLS connection between Kubernetes API server and webhook server.
 >
 >Please follow the cert manager installation guide to install cert manager before you install FortiADC Kubernetes Controller 3.1 or upgrade FortiADC Kubernetes Controller to version 3.1 or later.
 
 The version of cert manager we had verified is v1.18.2
 
 https://cert-manager.io/docs/installation/
+
 
 ## Get Repo Information
 
@@ -317,15 +322,19 @@ Try to access https://test.com/hello.
 ## Deploy Layer4 TCP VirtualServer
 
 Below, we will walk through the steps to deploy a TCP VirtualServer that acts as a proxy for a PostgreSQL database service running in Kubernetes.
+
 ```mermaid
 flowchart LR
+
   subgraph "Kubernetes Cluster"
+    pgsvc["PostgreSQL Service"]
     sslpg["🔒 PostgreSQL Pod<br>SSL enabled + Cert Verification"]
+    pgsvc --> sslpg
   end
 
-  client["psql client"] --> l4vs["FortiADC Layer 4 TCP VS<br>(192.168.1.108:5432)"]
+  client["psql client"] --> l4vs["FortiADC Layer4 TCP VirtualServer<br>(192.168.1.108:5432)"]
   l4vs --> route["Content Routing<br>sourceAddress 192.168.1.0/24"]
-  route --> sslpg
+  route --> pgsvc
 ```
 ### Deploy the Pods and expose the Services
 
