@@ -5,7 +5,8 @@ In this demo, we’ll showcase how to deploy a **TCP Virtual Server** on **Forti
 ```mermaid
 flowchart LR
 
-  subgraph "Kubernetes Cluster(Microk8s with Calico CNI)"
+  subgraph "Kubernetes Cluster<br>(Microk8s with Calico VXLAN CNI)"
+    topdummy[" "]:::invisible
     pgsvc["PostgreSQL Service"]
     sslpg["🔒 PostgreSQL Pod<br>SSL enabled + Cert Verification"]
     pgsvc --> sslpg
@@ -14,7 +15,10 @@ flowchart LR
   client["psql client"] --> l4vs["FortiADC Layer4 TCP VirtualServer<br>(172.23.133.109:5432)"]
   l4vs --> route["Content Routing<br>sourceAddress 172.23.133.0/24"]
   route --> pgsvc
+  classDef invisible fill:none,stroke:none;
+  class topdummy invisible
 ```
+
 ## Outline
 
 1.  Scenario Overview:  
@@ -115,7 +119,7 @@ flowchart LR
   class dataplane dataplane
 
 ```
-## integrate FortiADC with Kubernetes in a Calico VXLAN environment.
+## Integrate FortiADC with Kubernetes in a Calico VXLAN environment.
 
 
 ## Deploy the TCP Virtual Server to expose the PostgreSQL server with SSL enabled.
