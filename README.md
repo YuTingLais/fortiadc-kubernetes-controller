@@ -169,9 +169,9 @@ Check the log of the FortiADC Kubernetes Controller.
 >[!WARNING]
 >Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
 
-        helm repo remove fortiadc-ingress-controller
-        helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
-        helm repo update
+    helm repo remove fortiadc-ingress-controller
+    helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
+    helm repo update
 
 
 
@@ -338,11 +338,15 @@ flowchart LR
 ```
 ### Deploy the Pods and expose the Services
 
-PostgresSQL with SSL enabled:
+Download the PostgresSQL with SSL enabled service yaml file:
 
-    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/postgresql_ssl_service.yaml
+     curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/postgresql_ssl_service.yaml -o postgresql_ssl_service.yaml
 
 :warning:  Please make sure you had installed the cert-manager. The certificates used in this example are all auto-signed and issued by cert-manager.
+
+Modify the Service Annotation in postgresql_ssl_service.yaml to accommodate to your environment, ex: change the name of overlay_tunnel if your want to expose your service with ClusterIP type. Then deploy the PostgresSQL with SSL enabled service with kubectl command
+
+    kubectl apply -f postgresql_ssl_service.yaml
 
 ### Deploy the VirtualServer
 
