@@ -174,8 +174,8 @@ Check the log of the FortiADC Kubernetes Controller.
     helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
 
-## Configuration parameters
-### FortiADC Authentication Secret
+### Configuration parameters
+#### FortiADC Authentication Secret
 
 As shown in above figure, the FortiADC Kubernetes Controller satisfies an Ingress by FortiADC REST API call, so the authentication parameters of the FortiADC must be known to the FortiADC Kubernetes Controller.
 
@@ -186,8 +186,8 @@ To preserve the authentication securely on the Kubernetes cluster, you can save 
 The secret is named fad-login. This value will be specified in the Ingress annotation "fortiadc-login" for the FortiADC Kubernetes Controller to get permission access on the FortiADC.
 
 :warning:  The namespace of the authentication secret must be the same as the Ingress/virtualserver which references this authentication secret.
-### Virtual Server Configuration Fields
-#### Annotation in VirtualServer
+#### Virtual Server Configuration Fields
+##### Annotation in VirtualServer
 Configuration parameters are required to be specified in the VirtualServer annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the VirtualServer resource.
 
 |Parameter  | Description | Default |
@@ -197,7 +197,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 | fortiadc-login | The Kubernetes secret name preserves the FortiADC authentication information. <br> **Note**: This parameter is **required**. | |
 | fortiadc-ctrl-log | Enable/disable the FortiADC Kubernetes Controller log. Once enabled, the FortiADC Kubernetes Controller will print the verbose log the next time the VirtualServer is updated. |enable |
 
-#### VirtualServer Resource Specification
+##### VirtualServer Resource Specification
 
 
 | Field                     | Type     | Description                                                                                                                                                                     | Default              |
@@ -228,7 +228,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 
 ---
 
-### `realServerPool` Field Details
+`realServerPool` Field Details
 
 | Field            | Type                 | Description                                                                                                                                       |
 |------------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -238,7 +238,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 
 ---
 
-### `contentRoutings` Field Details
+`contentRoutings` Field Details
 
 | Field                      | Type     | Description                                                                                                                                                   | Default        |
 |---------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
