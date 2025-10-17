@@ -1,6 +1,9 @@
-
-# Demo: FortiADC Kubernetes Controller Integration
-In this demo, we’ll showcase how to deploy a **TCP Virtual Server** on **FortiADC** that proxies traffic to a **PostgreSQL database service** running inside a **Kubernetes cluster**.
+# FortiADC integration with FortiADC Kubernetes Controller: VirtualServer CustomResource that supports for Kubernetes TCP/UDP services
+-   **Introduction to the VirtualServer CRD** – Enabling support for Kubernetes TCP/UDP services beyond traditional HTTP routing.
+    
+-   **Calico with VXLAN CNI Integration** – Leveraging Calico's VXLAN support for flexible, scalable network overlays.
+    
+-   **Live Demo Scenario** – Showcasing real-world use of the VirtualServer CRD and Calico VXLAN in a Kubernetes environment. This demo shows how we can define a **TCP VirtualServer** as a **Custom Resource (CR)** inside the Kubernetes cluster — using our own VirtualServer CRD. The **FortiADC Kubernetes Controller** watches for VirtualServer Custom Resource and associated resources like **Services, Pods, and VXLAN networking**, then **translates and deploys them** into corresponding **FortiADC objects**. As a result, users can simply connect to the **FortiADC TCP VirtualServer**, and that traffic is securely proxied to the **PostgreSQL database running inside Kubernetes**.
 
 ```mermaid
 flowchart LR
@@ -21,12 +24,12 @@ flowchart LR
 
 ## Outline
 
-1.  Scenario Overview:  
-    Deployment of a TCP Virtual Server to expose a PostgreSQL server with SSL enabled on Kubernetes, using Calico VXLAN as the CNI plugin.
-2.  Integration Steps:  
+1.  Scenario Overview:
+    Deployment of a TCP Virtual Server CustomResource to expose a PostgreSQL server with SSL enabled on Kubernetes, using Calico VXLAN as the CNI plugin.
+2.  Integration Steps:
     How to integrate FortiADC with Kubernetes in a Calico VXLAN environment.
-3.  Deployment Steps:  
-    How to deploy the TCP Virtual Server to expose the PostgreSQL server with SSL enabled.
+3.  Deployment Steps:
+    How to deploy the TCP Virtual Server Custom Resource to expose the PostgreSQL server with SSL enabled.
 
 ## Scenario Overview
 
@@ -121,9 +124,96 @@ flowchart LR
 ```
 ## Integrate FortiADC with Kubernetes in a Calico VXLAN environment.
 
+### Deploy FortiADC as a fake node in the Kubernetes cluster
 
-## Deploy the TCP Virtual Server to expose the PostgreSQL server with SSL enabled.
+Download the calico fake node file
 
+	curl -k https://raw.githubusercontent.com/hsandy123/fortiadc-kubernetes-controller/refs/heads/main/node_examples/calico_fake_fadc_node.yaml -o calico_fake_fadc_node.yaml
+
+The fake node configuration also with fake ipamhandle, ipamblock and BlockAffinity configuraion
+These are the network configuration Calico needed for a new node, the node IP address and subnet should be the same in all of these config.
+
+Apply the Calico fake node to Kubernetes cluster
+
+	kubectl apply -f calico_fake_fadc_node.yaml
+
+### Check calico vxlan vni and port
+
+#### Use kubectl command to check calico vxlan vni and port
+
+
+	kubectl get felixconfiguration default -o yaml
+
+
+Without specific configuration in felixconfiguraion, the default Calico VxLAN VNI is 4096, and the VxLAN port is UDP port 4789.
+The default value may not show in felixconfiguraion.
+
+#### The other way is to check vxlan.calico interface
+
+	ip -d link show vxlan.calico
+
+
+Calico will create a vxlan.calico interface on each node, you can also directly check the vxlan settings in this interface.
+
+
+### Found the Mac address that calico assign for the FortiADC fake node
+
+
+Calico will assign a MAC address for the FortiADC fake node,  found the address in ARP table of master node.
+
+
+	ip neigh show | grep PERMANENT
+
+
+We assign an IP address for FortiADC in the fake node, and the MAC address is assigned by Calico.
+
+
+### Create an overlay tunnel in FortiADC
+
+To integrate the FortiADC overlay tunnel with the calico VxLAN, an overlay tunnel with the VxLAN type must be created in FortiADC
+
+#### In FortiADC, go to Network > Interface and click the Overlay Tunnel tab.
+
+Select VXLAN as the Mode and Calico VXLAN as the VXLAN Type, need to set the interface MAC for VxLAN interface
+The following is a sample of FortiADC configuration
+The MAC address that Calico assign for fake node need to configure to FortiADC to vxlan-interface-mac
+
+
+	config system overlay-tunnel
+		edit "k8s_calico"
+			set vxlan-type calico_vxlan
+			set interface port1
+			set destination-ip-addresses 172.23.133.48
+			set vxlan-interface-mac 66:18:7a:f4:7b:9e
+			set vni 4096
+			config  remote-host
+			end
+			config  arp
+			end
+		next
+	end
+
+
+Note that the overlay-tunnel name should be set in annotation "overlay-tunnel" when apply Service to Kubernetes cluster.
+
+### Set IP for VxLAN interface
+
+#### Go to Network > Interface. In the Interface page, locate the Interface configuration that share the same name as the overlay tunnel you just created
+
+specify the network interface IP and the netmask as the one used in your Kubernetes cluster CIDR netmask size.
+Also allow ping/http/https traffic to go through the interface
+
+Check your Kubernetes Cluster Calico CNI CIDR netmask size with the following
+
+
+	kubectl describe ippool default-ipv4-ippool
+
+
+By default Calico set CIDR netmask to be 10.1.0.0/16, in the fake node we set our fake node ip to be 10.1.187.192
+So for overlay tunnel interface, set 10.1.187.192/16 as the interface IP/netmask.
+
+
+## Deploy the TCP Virtual Server CR to expose the PostgreSQL server with SSL enabled.
 
 ### Installation
 Install the FortiADC Kubernetes Controller using Helm Charts.
@@ -141,6 +231,16 @@ The version of cert manager we had verified is v1.18.2
 https://cert-manager.io/docs/installation/
 
 
+    helm repo add jetstack https://charts.jetstack.io
+    helm repo update
+
+    helm install --debug cert-manager jetstack/cert-manager \
+           --namespace cert-manager \
+           --create-namespace \
+           --version v1.19.1 \
+           --set crds.enabled=true
+
+
 #### Create credential to access FortiADC Kubernetes Controller image
 
 Please refer to the private_install.pdf
@@ -148,7 +248,7 @@ Please refer to the private_install.pdf
 #### Get Repo Information
 
 
-    helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
+    helm repo add fortiadc-kubernetes-controller https://hsandy123.github.io/fortiadc-kubernetes-controller
 
     helm repo update
 
@@ -173,6 +273,9 @@ Check the log of the FortiADC Kubernetes Controller.
     helm repo update
     helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
+#### Uninstall Chart
+
+    helm uninstall -n fortiadc-ingress first-release
 
 ### Configuration parameters
 #### FortiADC Authentication Secret
@@ -211,6 +314,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 | wafProfile               | string   | The name of the Web Application Firewall (WAF) profile to apply.                                                                                                                |                      |
 | captchaProfile           | string   | CAPTCHA profile to enable human verification security features.                                                                                                                 |                      |
 | avProfile                | string   | Antivirus profile to scan traffic for threats.                                                                                                                                  |                      |
+| dosProfile                | string   | The dosProfile defines the configuration used to detect and mitigate denial-of-service (DoS) attacks..                                                                                                                                  |                      |
 | trafficGroup             | string   | The traffic group that this virtual server belongs to for traffic forwarding.                                                                                                   | default              |
 | fortiview                | string   | Enables/disables FortiView, FortiADC's traffic visualization and analytics (`enable` or `disable`).                                                                            | disable              |
 | trafficLog               | string   | Enables/disables logging of traffic handled by this virtual server (`enable` or `disable`).                                                                                     | disable              |
@@ -258,7 +362,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 
 Download the PostgresSQL with SSL enabled service yaml file:
 
-     curl -k https://raw.githubusercontent.com/fortinet/fortiadc-kubernetes-controller/main/service_examples/postgresql_ssl_service.yaml -o postgresql_ssl_service.yaml
+     curl -k https://raw.githubusercontent.com/hsandy123/fortiadc-kubernetes-controller/refs/heads/main/service_examples/postgresql_ssl_service.yaml -o postgresql_ssl_service.yaml
 
 :warning:  Please make sure you had installed the cert-manager. The certificates used in this example are all auto-signed and issued by cert-manager.
 
@@ -271,15 +375,21 @@ Modify the Service Annotation in postgresql_ssl_service.yaml to accommodate to y
 Download the virtualserver_postgres_ssl.yaml
 
 
-    curl -k https://raw.githubusercontent.com/fortinet/fortiadc-kubernetes-controller/main/customResource/virtualserver_postgres_ssl.yaml -o virtualserver_postgres_ssl.yaml
+    curl -k https://raw.githubusercontent.com/hsandy123/fortiadc-kubernetes-controller/refs/heads/main/customResource/virtualserver_postgres_ssl.yaml -o virtualserver_postgres_ssl.yaml
 
 Modify the VirtualServer Annotation in virtualserver_postgres_ssl.yaml to accommodate to your environment, ex: fortiadc-ip, fortiadc-admin-port, etc.. Also, modify the VirtualServer Spec, ex: address, contentRoutings.SourceAddress.  Then deploy the virtualserver with kubectl command
 
     kubectl apply -f virtualserver_postgres_ssl.yaml
 
 Try to access PostgreSQL use psql client.
+
 ```bash
-~$ psql "host=192.168.1.108 port=5432 dbname=mydb user=admin password=StrongP@ssw0rd sslmode=require"
+psql "host=172.23.133.109 port=5432 dbname=mydb user=admin password=StrongP@ssw0rd sslmode=require"
+
+```
+
+```bash
+~$ psql "host=172.23.133.109 port=5432 dbname=mydb user=admin password=StrongP@ssw0rd sslmode=require"
 psql (10.23 (Ubuntu 10.23-0ubuntu0.18.04.2), server 16.10)
 WARNING: psql major version 10, server major version 16.
          Some psql features might not work.
