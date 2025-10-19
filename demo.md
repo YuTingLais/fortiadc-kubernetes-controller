@@ -1,8 +1,6 @@
 # FortiADC integration with FortiADC Kubernetes Controller: VirtualServer CustomResource that supports for Kubernetes TCP/UDP services
 -   **Introduction to the VirtualServer CRD** – Enabling support for Kubernetes TCP/UDP services beyond traditional HTTP routing.
-    
 -   **Calico with VXLAN CNI Integration** – Leveraging Calico's VXLAN support for flexible, scalable network overlays.
-    
 -   **Live Demo Scenario** – Showcasing real-world use of the VirtualServer CRD and Calico VXLAN in a Kubernetes environment. This demo shows how we can define a **TCP VirtualServer** as a **Custom Resource (CR)** inside the Kubernetes cluster — using our own VirtualServer CRD. The **FortiADC Kubernetes Controller** watches for VirtualServer Custom Resource and associated resources like **Services, Pods, and VXLAN networking**, then **translates and deploys them** into corresponding **FortiADC objects**. As a result, users can simply connect to the **FortiADC TCP VirtualServer**, and that traffic is securely proxied to the **PostgreSQL database running inside Kubernetes**.
 
 ```mermaid
@@ -213,7 +211,7 @@ By default Calico set CIDR netmask to be 10.1.0.0/16, in the fake node we set ou
 So for overlay tunnel interface, set 10.1.187.192/16 as the interface IP/netmask.
 
 
-## Deploy the TCP Virtual Server CR to expose the PostgreSQL server with SSL enabled.
+## Deploy the TCP Virtual Server Custom Resource to expose the PostgreSQL server with SSL enabled.
 
 ### Installation
 Install the FortiADC Kubernetes Controller using Helm Charts.
@@ -378,6 +376,9 @@ Download the virtualserver_postgres_ssl.yaml
     curl -k https://raw.githubusercontent.com/hsandy123/fortiadc-kubernetes-controller/refs/heads/main/customResource/virtualserver_postgres_ssl.yaml -o virtualserver_postgres_ssl.yaml
 
 Modify the VirtualServer Annotation in virtualserver_postgres_ssl.yaml to accommodate to your environment, ex: fortiadc-ip, fortiadc-admin-port, etc.. Also, modify the VirtualServer Spec, ex: address, contentRoutings.SourceAddress.  Then deploy the virtualserver with kubectl command
+
+>[!NOTE]
+>When configuring a Layer 4 VirtualServer, the default packet forwarding method is Full NAT.  Therefore, the `natSourcePoolList` field **must** be specified in the custom resource definition. Before deploying the VirtualServer CR, you **must** pre-configure a SNAT pool on the FortiADC.  The SNAT IP address range should **match the subnet of the VXLAN interface**, so that the return traffic is correctly routed.
 
     kubectl apply -f virtualserver_postgres_ssl.yaml
 
