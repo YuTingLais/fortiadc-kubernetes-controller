@@ -3,8 +3,7 @@
 Below content is the basic know-how and quick start for FortiADC Kubernetes Controller.
 For more much details, please refer to the official document.
 
- - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-deployment-guide/)
- - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-openshift-deployment-guide/)
+[FortiADC Kubernetes Controller for Kubernetes clusters and OpenShift](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-deployment-guide/)
 
 </br>
 </br>
@@ -12,20 +11,18 @@ For more much details, please refer to the official document.
 
 ![FortiADC Kubernetes Controller Overview](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fadc-k8s-controller-overview.png?raw=true)
 
-The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Ingress Controller:
+The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Kubernetes Controller: 
 
- - To list and watch Ingress/custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node and Secret.
+ - To list and watch Ingress/Custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node, Pod and Secret. 
  - To convert Ingress/Fortinet-defined VirtualServer related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
  - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined VirtualServer resources and automatically implement corresponding actions on FortiADC.
-
-
+ 
+ 
  ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fad-k8s-controller-flow.png?raw=true)
-
-
 
 Kubernetes Ingress is an API resource that manages external access to cluster services, typically HTTP/HTTPS traffic, providing features like load balancing, SSL termination, and name-based virtual hosting.
 
-The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification. Moreover, The VirtualServer custom resource version v1alpha2 supports not only Layer 7 (HTTP/HTTPS) but also Layer 4 (TCP/UDP) servers in Kubernetes.
+The VirtualServer custom resource extends the standard Ingress model, enabling more comprehensive utilization of FortiADC’s virtual server features by allowing detailed parameters to be specified directly in the resource specification.
 
 The FortiADC Kubernetes Controller bridges Kubernetes native routing capabilities with FortiADC’s advanced traffic management and security features such as Web Application Firewall (WAF), Antivirus Scanning, and Denial of Service (DoS) prevention to protect the web server resources in the Kubernetes cluster, enabling seamless integration of both.
 
@@ -37,7 +34,7 @@ Other features such as health check, traffic log management, and FortiView on Fo
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=9>Version</th>
+            <th colspan=8>Version</th>
         </tr>
     </thead>
     <tbody>
@@ -50,8 +47,7 @@ Other features such as health check, traffic log management, and FortiView on Fo
             <td>2.0.1</td>
             <td>2.0.2</td>
             <td>2.0.3</td>
-            <td>3.0.0</td>
-            <td>3.1.0</td>
+	    <td>3.0.0</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
@@ -61,18 +57,17 @@ Other features such as health check, traffic log management, and FortiView on Fo
             <td>1.19.8-1.28.x</td>
             <td>1.19.8-1.30.x</td>
             <td>1.19.8-1.32.x</td>
-            <td colspan=2>1.19.8-1.33.x</td>
+	    <td>1.19.8-1.33.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=9>5.4.5 - 8.x.x*</td>
+            <td colspan=8>5.4.5 - 8.x.x*</td>
         </tr>
-            <tr>
+	    <tr>
             <td>Openshift Container platform</td>
             <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=2> 4.13-4.15.x</td>
-            <td colspan=2> 4.13-4.19.x</td>
+            <td colspan=3> 4.13-4.19.x</td>
         </tr>
     </tbody>
 </table>
@@ -122,24 +117,23 @@ Install the FortiADC Kubernetes Controller using Helm Charts.
 
 :bulb: Currently, only Helm 3 (version 3.6.3 or later) is supported.
 
-Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Ingress Controller can be deployed in one simple command.
+Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Kubernetes Controller can be deployed in one simple command. 
+
+The Kubernetes objects required for the FortiADC Kubernetes Controller are listed below:
+
+|Kubernetes object| Description |
+|--|--|
+| Deployment | By configuring the replica and pod template in the Kubernetes deployment, the deployment ensures the FortiADC Kubernetes Controller provides a non-terminated service. |
+| Service Account | The service account is used in the FortiADC Kubernetes Controller. |
+| Cluster Role | A cluster role defines the permission on the Kubernetes cluster-scoped Ingress-related objects |
+| Cluster Role Binding |The cluster role is bound to the service account used for the FortiADC Kubernetes Controller, allowing the FortiADC Kubernetes Controller to access and operate the Kubernetes cluster-scoped Ingress-related and Fortinet-defined custom resources related objects. |
+| Ingress Class |The IngressClass "fadc-ingress-controller" is created for the FortiADC Kubernetes Controller to identify the Ingress resource. If the Ingress is defined with the IngressClass "fadc-ingress-controller", the FortiADC Kubernetes Controller will manage this Ingress resource. |
+| CustomResourceDefinition |The CustomResourceDefinition “VirtualServer” defines advanced HTTP routing in Kubernetes. It enhances the standard Ingress by supporting multiple upstreams, precise path routing and delegation, Traffic splitting and advanced actions, and native integration with FortiADC virtualserver features (WAF, Fortiview, etc.) | 
 
 To get the verbose output, add --debug option for all the Helm commands.
 
-## Install cert-manager.io
-
->[!WARNING] 
-> :bangbang: Webhook server is introduced in FortiADC Kubernetes Controller 3.1,  and the cert-manager is required to offer the self-signed certificate for the TLS connection between Kubernetes API server and webhook server.
->
->Please follow the cert manager installation guide to install cert manager before you install FortiADC Kubernetes Controller 3.1 or upgrade FortiADC Kubernetes Controller to version 3.1 or later.
-
-The version of cert manager we had verified is v1.18.2
-
-https://cert-manager.io/docs/installation/
-
-
 ## Get Repo Information
-
+   
 
     helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
 
@@ -152,15 +146,15 @@ https://cert-manager.io/docs/installation/
 ## Check the installation
 
     helm history -n fortiadc-ingress first-release
-
+    
     kubectl get -n fortiadc-ingress deployments
-
+    
     kubectl get -n fortiadc-ingress pods
 
 Check the log of the FortiADC Kubernetes Controller.
 
     kubectl logs -n fortiadc-ingress -f [pod name]
-
+ 
 ## Upgrading chart
 
     helm repo update
@@ -169,9 +163,9 @@ Check the log of the FortiADC Kubernetes Controller.
 >[!WARNING]
 >Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
 
-    helm repo remove fortiadc-ingress-controller
-    helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
-    helm repo update
+	helm repo remove fortiadc-ingress-controller
+	helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
+	helm repo update
 
 
 
@@ -247,9 +241,7 @@ Configuration parameters are required to be specified in the VirtualServer annot
 | real-server-ssl-profile| Specify the real server SSL profile name. Real server profiles determine settings for communication between FortiADC and the backend real servers. The default is NONE, which is applicable for non-SSL traffic. For more details, see the FortiADC Handbook on SSL profiles. |NONE|
 |overlay_tunnel|Overlay tunnel name. Used for service with ClusterIP type||
 
-# Deployment
-## Deploy Layer7 HTTP(S) Ingress/VirtualServer
-Below is an example to deploy a simple-fanout Ingress/VirtualServer
+# Deployment of a Simple-fanout Ingress/VirtualServer Example
 
  ```mermaid
 graph LR;
@@ -277,7 +269,7 @@ Service1 defines a logical set of Pods with the label run=sise. Sise is a simple
 Service2 defines a logical set of Pods with the label run=nginx-demo. Nginx is also a simple HTTP web server.
 Services are deployed under the namespace default.
 
-### Deploy the Pods and expose the Services
+## Deploy the Pods and expose the Services
 
 Service1:
 
@@ -286,7 +278,7 @@ Service2:
 
     kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/service2.yaml
 
-### Deploy the Ingress/VirtualServer
+## Deploy the Ingress/VirtualServer
 
 Download the simple-fanout-example.yaml
 
@@ -297,9 +289,9 @@ Modify the Ingress Annotation in simple-fanout-example.yaml to accommodate to yo
 
     kubectl apply -f simple-fanout-example.yaml
 
-:bulb: You can use VirtualServer to replace with Ingress.
+:bulb: You can use VirtualServer to replace with Ingress. 
 
-    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/virtualserver_simple_fanout.yaml -o virtualserver-simple-fanout-example.yaml
+ 	 curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/virtualserver_simple_fanout.yaml -o virtualserver-simple-fanout-example.yaml
 
 
 Modify the VirtualServer Annotation in virtualserver-simple-fanout-example.yaml to accommodate to your environment, ex: fortiadc-ip, fortiadc-admin-port, etc.. Then deploy the virtualserver with kubectl command
@@ -318,57 +310,4 @@ Try to access https://test.com/hello.
 
 ![nginx-demo](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/nginx-demo.png?raw=true)
 
-
-## Deploy Layer4 TCP VirtualServer
-
-Below, we will walk through the steps to deploy a TCP VirtualServer that acts as a proxy for a PostgreSQL database service running in Kubernetes.
-
-```mermaid
-flowchart LR
-
-  subgraph "Kubernetes Cluster"
-    pgsvc["PostgreSQL Service"]
-    sslpg["🔒 PostgreSQL Pod<br>SSL enabled + Cert Verification"]
-    pgsvc --> sslpg
-  end
-
-  client["psql client"] --> l4vs["FortiADC Layer4 TCP VirtualServer<br>(192.168.1.108:5432)"]
-  l4vs --> route["Content Routing<br>sourceAddress 192.168.1.0/24"]
-  route --> pgsvc
-```
-### Deploy the Pods and expose the Services
-
-Download the PostgresSQL with SSL enabled service yaml file:
-
-     curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/postgresql_ssl_service.yaml -o postgresql_ssl_service.yaml
-
-:warning:  Please make sure you had installed the cert-manager. The certificates used in this example are all auto-signed and issued by cert-manager.
-
-Modify the Service Annotation in postgresql_ssl_service.yaml to accommodate to your environment, ex: change the name of overlay_tunnel if your want to expose your service with ClusterIP type. Then deploy the PostgresSQL with SSL enabled service with kubectl command
-
-    kubectl apply -f postgresql_ssl_service.yaml
-
-### Deploy the VirtualServer
-
-Download the virtualserver_postgres_ssl.yaml
-
-
-    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/virtualserver_postgres_ssl.yaml -o virtualserver_postgres_ssl.yaml
-
-Modify the VirtualServer Annotation in virtualserver_postgres_ssl.yaml to accommodate to your environment, ex: fortiadc-ip, fortiadc-admin-port, etc.. Also, modify the VirtualServer Spec, ex: address, contentRoutings.SourceAddress.  Then deploy the virtualserver with kubectl command
-
-    kubectl apply -f virtualserver_postgres_ssl.yaml
-
-Try to access PostgreSQL use psql client.
-```bash
-~$ psql "host=192.168.1.108 port=5432 dbname=mydb user=admin password=StrongP@ssw0rd sslmode=require"
-psql (10.23 (Ubuntu 10.23-0ubuntu0.18.04.2), server 16.10)
-WARNING: psql major version 10, server major version 16.
-         Some psql features might not work.
-SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
-Type "help" for help.
-
-mydb=# 
-
-```
 
