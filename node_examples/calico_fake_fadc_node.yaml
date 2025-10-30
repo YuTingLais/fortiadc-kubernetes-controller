@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Node
+metadata:
+    name: fadc-fake-node
+    annotations:
+        projectcalico.org/IPv4Address: 172.23.133.171/24
+        projectcalico.org/IPv4VXLANTunnelAddr: 10.1.187.192
+    labels:
+        kubernetes.io/hostname: fadc-fake-node
+        kubernetes.io/os: linux
+spec: {}
+status:
+    addresses:
+    - address: 172.23.133.171
+      type: InternalIP
+    conditions:
+    - type: Ready
+      status: "True"
+                                                                                      
+---
+apiVersion: crd.projectcalico.org/v1
+kind: BlockAffinity
+metadata:
+    name: fadc-fake-node-10-1-187-192-26
+                                                                            
+spec:
+    cidr: 10.1.187.192/26
+    node: fadc-fake-node
+    deleted: "false"
+    state: confirmed
+                                                                                      
+---
+apiVersion: crd.projectcalico.org/v1
+kind: IPAMBlock
+metadata:
+    name: 10-1-187-192-26
+spec:
+    cidr: 10.1.187.192/26
+    affinity: host:fadc-fake-node
+    strictAffinity: false
+    allocations:
+        - null
+        - 0
+        - null
+    unallocated: [2,3,4,5,6,7,8,9,10]
+    attributes:
+        - handle_id: vxlan-tunnel-addr-fadc-fake-node
+ 
+---
+apiVersion: crd.projectcalico.org/v1
+kind: IPAMHandle
+metadata:
+    name: vxlan-tunnel-addr-fadc-fake-node
+spec:
+    handleID: vxlan-tunnel-addr-fadc-fake-node
+    block:
+        10.1.187.192/26: 1
