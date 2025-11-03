@@ -3,8 +3,7 @@
 Below content is the basic know-how and quick start for FortiADC Kubernetes Controller.
 For more much details, please refer to the official document.
 
- - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-deployment-guide/)
- - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-openshift-deployment-guide/)
+[FortiADC Kubernetes Controller for Kubernetes clusters and OpenShift](https://docs.fortinet.com/product/fortiadc-kubernetes-controller)
 
 </br>
 </br>
@@ -12,9 +11,9 @@ For more much details, please refer to the official document.
 
 ![FortiADC Kubernetes Controller Overview](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fadc-k8s-controller-overview.png?raw=true)
 
-The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Ingress Controller: 
+The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Kubernetes Controller: 
 
- - To list and watch Ingress/custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node and Secret. 
+ - To list and watch Ingress/Custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node, Pod and Secret. 
  - To convert Ingress/Fortinet-defined VirtualServer related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
  - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined VirtualServer resources and automatically implement corresponding actions on FortiADC.
  
@@ -68,7 +67,7 @@ Other features such as health check, traffic log management, and FortiView on Fo
             <td>Openshift Container platform</td>
             <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=3> 4.13-4.15.x</td>
+            <td colspan=3> 4.13-4.19.x</td>
         </tr>
     </tbody>
 </table>
@@ -118,7 +117,7 @@ Install the FortiADC Kubernetes Controller using Helm Charts.
 
 :bulb: Currently, only Helm 3 (version 3.6.3 or later) is supported.
 
-Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Ingress Controller can be deployed in one simple command. 
+Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Kubernetes Controller can be deployed in one simple command. 
 
 The Kubernetes objects required for the FortiADC Kubernetes Controller are listed below:
 
