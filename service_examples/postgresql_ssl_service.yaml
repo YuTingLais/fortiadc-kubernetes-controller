@@ -1,0 +1,153 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: pg-selfsigned
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postgres-cert
+spec:
+  secretName: postgres-tls
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  usages:
+    - server auth
+  commonName: "postgres"
+  subject:
+    organizations: ["example"]
+  dnsNames:
+    - postgres
+    - postgres.default.svc
+    - postgres.default.svc.cluster.local
+  issuerRef:
+    name: pg-selfsigned
+    kind: Issuer
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+stringData:
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: StrongP@ssw0rd
+  POSTGRES_DB: mydb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-ssl
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-ssl
+  template:
+    metadata:
+      labels:
+        app: postgres-ssl
+    spec:
+      initContainers:
+      - name: prepare-certs
+        image: postgres:16-alpine
+        securityContext:
+          runAsUser: 0
+        command: ["sh", "-lc"]
+        args:
+          - |
+            set -eux
+            PGUID="$(id -u postgres)"
+            PGGID="$(id -g postgres)"
+            mkdir -p /certs
+            cp /tls/tls.crt /certs/server.crt
+            cp /tls/tls.key /certs/server.key
+            [ -f /tls/ca.crt ] && cp /tls/ca.crt /certs/ca.crt || true
+            chown -R "${PGUID}:${PGGID}" /certs
+            chmod 755 /certs
+            chmod 600 /certs/server.key
+            chmod 644 /certs/server.crt
+            [ -f /certs/ca.crt ] && chmod 644 /certs/ca.crt || true
+        volumeMounts:
+        - name: tls
+          mountPath: /tls
+          readOnly: true
+        - name: certs
+          mountPath: /certs
+      containers:
+      - name: postgres
+        image: postgres:16-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: temp-data
+        - name: certs
+          mountPath: /certs
+          readOnly: true
+        args:
+          - "-c"
+          - "listen_addresses=*"
+          - "-c"
+          - "ssl=on"
+          - "-c"
+          - "ssl_cert_file=/certs/server.crt"
+          - "-c"
+          - "ssl_key_file=/certs/server.key"
+          - "-c"
+          - "ssl_ca_file=/certs/ca.crt"
+      volumes:
+      - name: temp-data
+        emptyDir: {}
+      - name: tls
+        secret:
+          secretName: postgres-tls
+          defaultMode: 0400
+      - name: certs
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-ssl-service
+  annotations: {
+    "health-check-ctrl" : "enable",
+    "health-check-relation" : "OR",
+    "health-check-list" : "LB_HLTHCK_ICMP",
+    "real-server-ssl-profile" : "NONE",
+    "overlay_tunnel" : "k8s"
+  }
+
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres-ssl
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+
