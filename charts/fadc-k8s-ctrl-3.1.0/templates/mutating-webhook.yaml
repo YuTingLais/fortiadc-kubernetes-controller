@@ -3,7 +3,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: {{ .Values.webhook.mutatingWebhookName }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}-ca
 webhooks:
 {{- range .Values.webhook.rules.mutating }}
   - name: {{ .name }}

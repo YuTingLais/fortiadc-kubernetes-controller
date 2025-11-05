@@ -3,7 +3,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ .Values.webhook.validatingWebhookName }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}-ca
 webhooks:
 {{- range .Values.webhook.rules.validating }}
   - name: {{ .name }}

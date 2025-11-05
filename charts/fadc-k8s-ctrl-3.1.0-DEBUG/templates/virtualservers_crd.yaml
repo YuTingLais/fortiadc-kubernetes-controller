@@ -4,7 +4,7 @@ metadata:
   name: virtualservers.fadk8sctrl.fortinet.com
   annotations:
     "helm.sh/resource-policy": keep
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}-ca
 spec:
   preserveUnknownFields: false
   group: fadk8sctrl.fortinet.com
