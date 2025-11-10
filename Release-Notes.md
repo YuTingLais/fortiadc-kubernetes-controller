@@ -1,5 +1,13 @@
 # FortiADC Ingress Controller Release Notes
 
+## 3.0.1
+### What's New
+1. Support Kubernetes version to 1.34
+2. New RemoteServer and Host Custom Resource: FortiADC Kubernetes Controller 3.0.1 introduces a new
+Fortinet-defined Kubernetes RemoteServer and Host Custom Resource that support FortiADC GLB configuration
+from Kubernetes manifests. This enables advanced traffic management across geographically distributed
+servers to be applied without manual GUI or CLI configuration.
+
 ## 3.0.0
 ### What's New
 1. Support Kubernetes version to 1.33

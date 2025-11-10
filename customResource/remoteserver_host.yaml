@@ -1,0 +1,27 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: RemoteServer
+metadata:
+  name: generic-rs2
+  annotations: {
+    "fortiadc-ip" : "172.23.133.185",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  serverType: Generic-Host
+  dataCenter:
+    name: dc2
+    location: US
+  healthCheckList: LB_HLTHCK_ICMP
+  virtualServers:
+    - name: v1
+      addressType: ipv4
+      ip: 20.20.20.1
+    - name: v2
+      addressType: ipv4
+      ip: 20.20.20.2
+    - name: v3
+      addressType: ipv6
+      ip6: 2001::2
+  vdom: root

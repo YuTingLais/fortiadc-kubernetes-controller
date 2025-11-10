@@ -5,7 +5,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["pods", "services", "nodes", "endpoints", "secrets"]
-  verbs: ["get", "watch", "list", "update"]
+  verbs: ["get", "watch", "list"]
 - apiGroups:
   - networking.k8s.io
   resources:
@@ -61,10 +61,10 @@ rules:
   - update
 {{- end }}
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers"]
+  resources: ["virtualservers", "remoteservers", "hosts"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers/status"]
+  resources: ["virtualservers/status", "remoteservers/status", "hosts/status"]
   verbs: ["get", "update", "patch"]
 - apiGroups:
   - apiextensions.k8s.io

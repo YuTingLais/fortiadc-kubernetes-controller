@@ -1,0 +1,49 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: Host
+metadata:
+  name: minimal-host
+  annotations: {
+    "fortiadc-ip" : "172.23.133.185",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  hostname: www
+  domain: host1.com.
+  policys:
+    - DEFAULT_DNS_POLICY
+  singleRecord: disable
+  persistence: disable
+  lbMethod: weight
+  feedbackIPv4: 0.0.0.1
+  fortiview: enable
+  virtualServerPools:
+    - name: vp1
+      topology:
+      isp:
+      weight: 1
+      virtualServerPool:
+        preferred: GEO
+        virtualServers:
+          - server: fortiadc-ingress_fortiadc-rs1
+            serverMember: v1
+            ttl: 3600
+          - server: fortiadc-ingress_generic-rs2
+            serverMember: v1
+    - name: vp2
+      topology:
+      isp:
+      weight: 1
+      virtualServerPool:
+        preferred: RTT
+        alternate: Server-Performance
+        alternateCPUMemoryRatio: 5
+        virtualServers:
+          - server: fortiadc-ingress_fortiadc-rs1
+            serverMember: v2
+            weight: 10
+          - server: fortiadc-ingress_generic-rs2
+            serverMember: v2
+            weight: 5
+  vdom: root

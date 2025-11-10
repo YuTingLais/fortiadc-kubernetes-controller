@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 # FortiADC Kubernetes Controller image from Dockerhub.com
 image:
-  repository: ytlai/fortiadc-k8s-ctrl
+  repository: fortinet/fortiadc-ingress
   pullPolicy: IfNotPresent
-  tag: "3.1.0.605"
+  tag: "3.0.1"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -20,6 +20,7 @@ podAnnotations: {}
 podSecurityContext: {}
 
 securityContext: {}
+
 nodeSelector: {}
 
 tolerations:
@@ -53,39 +54,3 @@ parameters:
   virtualServerFortiGSLB : "optional"
   openshiftRouteSupport: "no"
   enableStaticRouteSupport: "no"
-webhook:
-  useCertManager: true
-  service:
-    name: fad-webhook
-    port: 443
-    targetPort: 8443
-  tlsSecretName: webhook-tls
-  validatingWebhookName: validator.fadk8sctrl.fortinet.com
-  mutatingWebhookName: mutator.fadk8sctrl.fortinet.com
-  rules:
-    validating:
-      - name: validate-vs.fadk8sctrl.fortinet.com
-        group: fadk8sctrl.fortinet.com
-        version: v1alpha2
-        resources:
-          - virtualservers
-        scope: "Namespaced"
-        path: /validate-vs
-      - name: validate-ingress.fadk8sctrl.fortinet.com
-        group: networking.k8s.io
-        version: v1
-        resources:
-          - ingresses
-        scope: "Namespaced"
-        path: /validate-ingress
-
-    mutating:
-      - name: mutate-vs.fadk8sctrl.fortinet.com
-        group: fadk8sctrl.fortinet.com
-        version: v1alpha2
-        resources:
-          - virtualservers
-        scope: "Namespaced"
-        path: /mutate-vs
-imagePullSecrets:
-  - name: regcred

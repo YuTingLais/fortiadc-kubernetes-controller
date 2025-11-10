@@ -3,8 +3,7 @@
 Below content is the basic know-how and quick start for FortiADC Kubernetes Controller.
 For more much details, please refer to the official document.
 
- - [FortiADC Kubernetes Controller for Kubernetes clusters](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-deployment-guide/)
- - [FortiADC Kubernetes Controller for OpenShift ](https://docs.fortinet.com/document/fortiadc/8.0.0/fortiadc-kubernetes-controller-openshift-deployment-guide/)
+[FortiADC Kubernetes Controller for Kubernetes clusters and OpenShift](https://docs.fortinet.com/product/fortiadc-kubernetes-controller)
 
 </br>
 </br>
@@ -12,9 +11,9 @@ For more much details, please refer to the official document.
 
 ![FortiADC Kubernetes Controller Overview](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fadc-k8s-controller-overview.png?raw=true)
 
-The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Ingress Controller:
+The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined VirtualServer custom resources. It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Kubernetes Controller: 
 
- - To list and watch Ingress/custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node and Secret.
+ - To list and watch Ingress/Custom resource related resources, such as Ingress, Fortinet-defined VirtualServer, Service, Node, Pod and Secret. 
  - To convert Ingress/Fortinet-defined VirtualServer related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
  - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined VirtualServer resources and automatically implement corresponding actions on FortiADC.
 
@@ -37,21 +36,22 @@ Other features such as health check, traffic log management, and FortiView on Fo
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=9>Version</th>
+            <th colspan=10>Version</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>FortiADC Ingress Controller</td>
-            <td>1.0.0</td>
-            <td>1.0.1</td>
-            <td>1.0.2</td>
-            <td>2.0.0</td>
-            <td>2.0.1</td>
-            <td>2.0.2</td>
-            <td>2.0.3</td>
-            <td>3.0.0</td>
-            <td>3.1.0</td>
+			<td>1.0.0</td>
+			<td>1.0.1</td>
+			<td>1.0.2</td>
+			<td>2.0.0</td>
+			<td>2.0.1</td>
+			<td>2.0.2</td>
+			<td>2.0.3</td>
+			<td>3.0.0</td>
+			<td>3.0.1</td>
+			<td>3.1.0</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
@@ -60,19 +60,19 @@ Other features such as health check, traffic log management, and FortiView on Fo
             <td colspan=2>1.19.8-1.27.x</td>
             <td>1.19.8-1.28.x</td>
             <td>1.19.8-1.30.x</td>
-            <td>1.19.8-1.32.x</td>
-            <td colspan=2>1.19.8-1.33.x</td>
+			<td>1.19.8-1.32.x</td>
+			<td>1.19.8-1.33.x</td>
+			<td colspan=2>1.19.8-1.34.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=9>5.4.5 - 8.x.x*</td>
+            <td colspan=10>5.4.5 - 8.x.x*</td>
         </tr>
             <tr>
             <td>Openshift Container platform</td>
             <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=2> 4.13-4.15.x</td>
-            <td colspan=2> 4.13-4.19.x</td>
+            <td colspan=5> 4.13-4.19.x</td>
         </tr>
     </tbody>
 </table>
@@ -122,7 +122,7 @@ Install the FortiADC Kubernetes Controller using Helm Charts.
 
 :bulb: Currently, only Helm 3 (version 3.6.3 or later) is supported.
 
-Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Ingress Controller can be deployed in one simple command.
+Helm Charts ease the installation of the FortiADC Kubernetes Controller in the Kubernetes cluster. By using the Helm 3 installation tool, most of the Kubernetes objects required for the FortiADC Kubernetes Controller can be deployed in one simple command.
 
 To get the verbose output, add --debug option for all the Helm commands.
 
@@ -133,9 +133,21 @@ To get the verbose output, add --debug option for all the Helm commands.
 >
 >Please follow the cert manager installation guide to install cert manager before you install FortiADC Kubernetes Controller 3.1 or upgrade FortiADC Kubernetes Controller to version 3.1 or later.
 
-The version of cert manager we had verified is v1.18.2
+The version of cert manager we had verified is v1.19.1
 
 https://cert-manager.io/docs/installation/
+
+
+
+    helm repo add jetstack https://charts.jetstack.io
+    helm repo update
+
+    helm install --devel --debug cert-manager jetstack/cert-manager \
+           --namespace cert-manager \
+           --create-namespace \
+           --version v1.19.1 \
+           --set crds.enabled=true
+
 
 
 ## Get Repo Information
@@ -318,7 +330,6 @@ Try to access https://test.com/hello.
 
 ![nginx-demo](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/nginx-demo.png?raw=true)
 
-
 ## Deploy Layer4 TCP VirtualServer
 
 Below, we will walk through the steps to deploy a TCP VirtualServer that acts as a proxy for a PostgreSQL database service running in Kubernetes.
@@ -371,4 +382,53 @@ Type "help" for help.
 mydb=# 
 
 ```
+
+## Deploy a Simple GLB
+
+ ```mermaid
+---
+config:
+    flowchart:
+        wrappingWidth: 500
+---
+graph LR;
+  client([client])-.-> |www.host1.com|FortiADC_global_load_balancer["FortiADC GLB"];
+  FortiADC_global_load_balancer --> FortiADC_load_balancer["FortiADC load balancer"] .-> ingress1["HTTP/HTTPS VirtualServer or Ingress"];
+  FortiADC_global_load_balancer --> Third_party_load_balancer["Third-party load balancer"] .-> ingress2["HTTP/HTTPS VirtualServer or Ingress"];  subgraph dc1["dc1 (cluster)"]
+    ingress1;
+  end
+  subgraph dc2["dc2 (cluster)"]
+    ingress2;
+  end
+  classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+  classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+  classDef dc fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+  class ingress1,ingress2 k8s;
+  class client plain;
+  class dc1,dc2 dc;
+```
+
+In this example, the client queries the FQDN www.host1.com for a service.
+There are two data centers, dc1 and dc2, in different geographical locations to serve the service.
+dc1 is a set of servers using FortiADC's virtual server to manage.
+dc2 is a set of servers using a third-party ADC or other network devices to manage.
+FQDN and DC are deployed under the namespace default.
+The cleint receives the DNS response with IP from the closer virtual server.
+
+
+### Deploy the Servers
+
+dc1:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/remoteserver_slb.yaml
+dc2:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/remoteserver_host.yaml
+
+### Deploy the Host to expose the service
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/host.yaml
+
+Check the deployed GLB with FortiView
+![fortiview_topology](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/glb_fortiview.png?raw=true)
 

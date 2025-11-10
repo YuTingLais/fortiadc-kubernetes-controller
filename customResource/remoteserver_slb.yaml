@@ -1,0 +1,20 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha1
+kind: RemoteServer
+metadata:
+  name: fortiadc-rs1
+  annotations: {
+    "fortiadc-ip" : "172.23.133.185",
+    "fortiadc-login" : "fad-login",
+    "fortiadc-ctrl-log" : "enable",
+    "fortiadc-admin-port": "443"
+   }
+spec:
+  serverType: FortiADC-SLB
+  addressType: ipv4
+  ip: 127.0.0.1
+  port: 5858
+  dataCenter:
+    name: dc1
+    location: CA
+  autoSync: enable
+  vdom: root
