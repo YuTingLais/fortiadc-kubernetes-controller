@@ -432,3 +432,51 @@ dc2:
 Check the deployed GLB with FortiView
 ![fortiview_topology](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/glb_fortiview.png?raw=true)
 
+# Deployment of a Simple GLB Example
+
+ ```mermaid
+---
+config:
+    flowchart:
+        wrappingWidth: 500
+---
+graph LR;
+  client([client])-.-> |www.host1.com|FortiADC_global_load_balancer["FortiADC GLB"];
+  FortiADC_global_load_balancer --> FortiADC_load_balancer["FortiADC load balancer"] .-> ingress1["HTTP/HTTPS VirtualServer or Ingress"];
+  FortiADC_global_load_balancer --> Third_party_load_balancer["Third-party load balancer"] .-> ingress2["HTTP/HTTPS VirtualServer or Ingress"];  subgraph dc1["dc1 (cluster)"]
+    ingress1;
+  end
+  subgraph dc2["dc2 (cluster)"]
+    ingress2;
+  end
+  classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+  classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+  classDef dc fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+  class ingress1,ingress2 k8s;
+  class client plain;
+  class dc1,dc2 dc;
+```
+
+In this example, the client queries the FQDN www.host1.com for a service.
+There are two data centers, dc1 and dc2, in different geographical locations to serve the service.
+dc1 is a set of servers using FortiADC's virtual server to manage.
+dc2 is a set of servers using a third-party ADC or other network devices to manage.
+FQDN and DC are deployed under the namespace default.
+The cleint receives the DNS response with IP from the closer virtual server.
+
+
+## Deploy the Servers
+
+dc1:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/remoteserver_slb.yaml
+dc2:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/remoteserver_host.yaml
+
+## Deploy the Host to expose the service
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/customResource/host.yaml
+
+Check the deployed GLB with FortiView
+![fortiview_topology](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/glb_fortiview.png?raw=true)
