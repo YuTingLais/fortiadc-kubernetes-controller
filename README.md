@@ -235,7 +235,7 @@ Configuration parameters are required to be specified in the Ingress annotation 
 | virtual-server-fortigslb-hostname | The **Host Name** option is available if **One Click GSLB Server** is enabled. Enter the hostname part of the FQDN, such as `www`. **Note:** You can specify the @ symbol to denote the zone root. The value substitute for @ is the preceding $ORIGIN directive. | |
 | virtual-server-fortigslb-domainname | The **Domain Name** option is available if **One Click GSLB Server** is enabled. The domain name must end with a period. For example,`example.com.` | |
 
-## Annotation in VirtualServer
+## Annotation in VirtualServer/GSLB
 Configuration parameters are required to be specified in the VirtualServer annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the VirtualServer resource.
 
 |Parameter  | Description | Default |
@@ -382,7 +382,7 @@ mydb=#
 
 ```
 
-## Deploy a Simple GLB
+## Deploy a simple GLB
 
  ```mermaid
 ---
