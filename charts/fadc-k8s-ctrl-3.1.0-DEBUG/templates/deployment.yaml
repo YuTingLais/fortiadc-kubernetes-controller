@@ -23,7 +23,7 @@ spec:
     spec:
       initContainers:
         - name: wait-for-tls-secret
-          image: groundnuty/k8s-wait-for:v1.6
+          image: groundnuty/k8s-wait-for:latest
           args:
             - "secret/{{ .Values.webhook.tlsSecretName }}"
             - "--timeout=300"
