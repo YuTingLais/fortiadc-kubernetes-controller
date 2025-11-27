@@ -7,6 +7,14 @@ rules:
   resources: ["pods", "services", "nodes", "endpoints", "secrets"]
   verbs: ["get", "watch", "list"]
 - apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingresses
