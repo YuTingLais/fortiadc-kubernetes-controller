@@ -5,6 +5,7 @@ metadata:
   labels:
     app: tcp-echo-server
 spec:
+  automountServiceAccountToken: false
   containers:
     - name: tcp-echo-server
       image: alpine/socat

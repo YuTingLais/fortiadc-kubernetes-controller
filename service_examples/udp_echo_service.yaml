@@ -5,6 +5,7 @@ metadata:
   labels:
     app: udp-echo-server
 spec:
+  automountServiceAccountToken: false
   containers:
     - name: socat
       image: alpine/socat
