@@ -1,7 +1,7 @@
 apiVersion: v3
 name: fadc-k8s-ctrl
 version: 3.1.0
-kubeVersion: ">= 1.19.8-0, <= 1.34-0"
+kubeVersion: ">= 1.19.8-0, <= 1.35-0"
 description: A Helm chart for FortiADC Kubernetes Controller
 type: application
 appVersion: "3.1.0"

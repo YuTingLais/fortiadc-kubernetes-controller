@@ -1,7 +1,7 @@
 apiVersion: fadk8sctrl.fortinet.com/v1alpha1
 kind: Host
 metadata:
-  name: minimal-host
+  name: simple-host
   annotations: {
     "fortiadc-ip" : "172.23.133.185",
     "fortiadc-login" : "fad-login",
@@ -11,7 +11,7 @@ metadata:
 spec:
   hostname: www
   domain: host1.com.
-  policys:
+  dnsPolicy:
     - DEFAULT_DNS_POLICY
   singleRecord: disable
   persistence: disable
@@ -29,7 +29,7 @@ spec:
           - server: fortiadc-ingress_fortiadc-rs1
             serverMember: v1
             ttl: 3600
-          - server: fortiadc-ingress_generic-rs2
+          - server: fortiadc-ingress_generic-rs1
             serverMember: v1
     - name: vp2
       topology:
@@ -43,7 +43,7 @@ spec:
           - server: fortiadc-ingress_fortiadc-rs1
             serverMember: v2
             weight: 10
-          - server: fortiadc-ingress_generic-rs2
+          - server: fortiadc-ingress_generic-rs1
             serverMember: v2
             weight: 5
   vdom: root

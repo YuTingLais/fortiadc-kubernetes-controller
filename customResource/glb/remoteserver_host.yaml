@@ -1,7 +1,7 @@
 apiVersion: fadk8sctrl.fortinet.com/v1alpha1
 kind: RemoteServer
 metadata:
-  name: generic-rs2
+  name: generic-rs1
   annotations: {
     "fortiadc-ip" : "172.23.133.185",
     "fortiadc-login" : "fad-login",
