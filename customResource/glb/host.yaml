@@ -26,10 +26,10 @@ spec:
       virtualServerPool:
         preferred: GEO
         virtualServers:
-          - server: fortiadc-ingress_fortiadc-rs1
+          - server: default_fortiadc-rs1
             serverMember: v1
             ttl: 3600
-          - server: fortiadc-ingress_generic-rs1
+          - server: default_generic-rs1
             serverMember: v1
     - name: vp2
       topology:
@@ -40,10 +40,10 @@ spec:
         alternate: Server-Performance
         alternateCPUMemoryRatio: 5
         virtualServers:
-          - server: fortiadc-ingress_fortiadc-rs1
+          - server: default_fortiadc-rs1
             serverMember: v2
             weight: 10
-          - server: fortiadc-ingress_generic-rs1
+          - server: default_generic-rs1
             serverMember: v2
             weight: 5
   vdom: root

@@ -2,15 +2,15 @@
 
 ## 3.1.0
 ### What's New
-1. Support Kubernetes version to 1.34
+1. Support Kubernetes version to 1.35
 2. New RemoteServer and Host Custom Resource: FortiADC Kubernetes Controller 3.1.0 introduces a new
 Fortinet-defined Kubernetes RemoteServer and Host Custom Resource that support FortiADC GLB configuration
 from Kubernetes manifests. This enables advanced traffic management across geographically distributed
 servers to be applied without manual GUI or CLI configuration.
 3. The Custom Resource VirtualServer has been upgraded to version v1alpha2, with added support for Layer 4 TCP/UDP VirtualServers.
 The v1alpha2 version extends FortiADC capabilities by supporting not only HTTP/HTTPS load balancing, but also TCP/UDP proxying. With this enhancement, a Layer 4 VirtualServer resource can now be defined to act as a proxy or load balancer for Layer 4 (TCP/UDP) services within a Kubernetes cluster.
-4. Support for the Calico VXLAN CNI plugin has been added.
-FortiADC can now connect to Kubernetes clusters via an overlay network tunnel using Calico VXLAN, enabling seamless integration with environments using Calico as the CNI.
+4. The controller now supports the VXLAN mode of the Calico CNI plugin.
+FortiADC(version 8.0.2 or later) can now connect to Kubernetes clusters through an overlay network tunnel using Calico VXLAN, enabling seamless integration in environments that use Calico as the CNI.
 5. Fix [issue](https://github.com/fortinet/fortiadc-ingress/issues/8) to resolve race conditions that occur when updating the Ingress status.
 
 ## 3.0.0

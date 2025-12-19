@@ -60,7 +60,7 @@ Additional features such as health checks, traffic log management, and FortiView
             <td>1.19.8-1.30.x</td>
 			<td>1.19.8-1.32.x</td>
 			<td>1.19.8-1.33.x</td>
-			<td>1.19.8-1.34.x</td>
+			<td>1.19.8-1.35.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
@@ -79,7 +79,8 @@ Additional features such as health checks, traffic log management, and FortiView
 >Some features of the FortiADC Kubernetes Controller require a corresponding version of FortiADC support. Please check the [release notes](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/Release-Notes.md).
 
 >[!WARNING]
->When using FortiADC Kubernetes Controller 2.0.x, the Ingress related objects on FortiADC (including virtual servers, content routing, real server pools, and real servers) will be fully managed by the Ingress Controller. This means that any virtual server, content routing, real server pool or real server object that is not deployed by FortiADC Ingress Controller will be removed automatically.
+>When using FortiADC Kubernetes Controller version 2.0.x or later, all Ingress-related objects on FortiADC—including virtual servers, content routing rules, real server pools, and real servers—are fully managed by the controller.
+As a result, any such object not provisioned by the FortiADC Kubernetes Controller will be automatically deleted to ensure configuration consistency.
 
 ## Supported Environment
 The FortiADC Kubernetes Controller has been verified to run in the Openshift Cluster in Openshift Container Platform environment and Kubernetes cluster in the below environments:
@@ -132,7 +133,7 @@ To get the verbose output, add --debug option for all the Helm commands.
 >
 >Please follow the cert manager installation guide to install cert manager before you install FortiADC Kubernetes Controller 3.1 or upgrade FortiADC Kubernetes Controller to version 3.1 or later.
 
-The version of cert manager we had verified is v1.19.1
+Compatibility has been verified with cert-manager v1.19.1.
 
 https://cert-manager.io/docs/installation/
 
@@ -248,7 +249,7 @@ Configuration parameters are required to be specified in the Fortinet-defined CR
 ## Annotation in Service
 
 >**Warning**
->The FortiADC Ingress Controller version 1.0.x only supports services of type **NodePort**. 2.0.x supports both NodePort and ClusterIP type.
+>The FortiADC Kubernetes Controller version 1.0.x only supports services of type **NodePort**. Starting from 2.0.x, both NodePort and ClusterIP service types are supported.
 
 |Parameter  | Description | Default |
 |--|--|--|
