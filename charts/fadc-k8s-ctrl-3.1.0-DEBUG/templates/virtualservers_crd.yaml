@@ -433,8 +433,6 @@ spec:
                   message: "You must define at least one of realServerPool or contentRoutings."
                 - rule: "!(has(self.realServerPool) && has(self.contentRoutings))"
                   message: "You cannot define both realServerPool and contentRoutings at the same time."
-                - rule: "(self.loadBalanceProfile == 'LB_PROF_TCP' || self.loadBalanceProfile == 'LB_PROF_UDP') ? has(self.natSourcePoolList) : true"
-                  message: "When loadBalanceProfile is 'LB_PROF_TCP' or 'LB_PROF_UDP', 'natSourcePoolList' must be set."
             status:
               type: object
               properties:
