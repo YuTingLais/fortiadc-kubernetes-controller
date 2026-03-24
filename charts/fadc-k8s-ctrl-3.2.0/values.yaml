@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 # FortiADC Kubernetes Controller image from Dockerhub.com
 image:
-  repository: ytlai/fortiadc-k8s-ctrl
+  repository: fortinet/fortiadc-ingress
   pullPolicy: IfNotPresent
-  tag: "3.1.0.621"
+  tag: "3.2.0"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -87,5 +87,3 @@ webhook:
           - virtualservers
         scope: "Namespaced"
         path: /mutate-vs
-imagePullSecrets:
-  - name: regcred

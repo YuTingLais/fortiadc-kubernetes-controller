@@ -7,6 +7,14 @@ rules:
   resources: ["pods", "services", "nodes", "endpoints", "secrets"]
   verbs: ["get", "watch", "list"]
 - apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingresses
@@ -61,10 +69,10 @@ rules:
   - update
 {{- end }}
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers", "remoteservers", "hosts"]
+  resources: ["virtualservers", "remoteservers", "hosts", "fortiadcvirtualserverpolicies", "fortiadcgatewayparameters"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers/status", "remoteservers/status", "hosts/status"]
+  resources: ["virtualservers/status", "remoteservers/status", "hosts/status", "fortiadcgatewayparameters/status", "fortiadcvirtualserverpolicies/status"]
   verbs: ["get", "update", "patch"]
 - apiGroups:
   - apiextensions.k8s.io
@@ -77,6 +85,25 @@ rules:
 - apiGroups: [""]
   resources: ["pods/exec"]
   verbs: ["create"]
+- apiGroups: ["gateway.networking.k8s.io"]
+  resources:
+  - gatewayclasses
+  - gateways
+  - httproutes
+  - tcproutes
+  - udproutes
+  - tlsroutes
+  - referencegrants
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["gateway.networking.k8s.io"]
+  resources:
+  - gatewayclasses/status
+  - gateways/status
+  - httproutes/status
+  - tcproutes/status
+  - udproutes/status
+  - tlsroutes/status
+  verbs: ["update", "patch"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

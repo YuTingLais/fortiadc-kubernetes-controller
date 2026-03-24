@@ -1,0 +1,48 @@
+{{- if .Values.webhook.useCertManager }}
+# global clusterIssuer only for ca signed
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-cluster-issuer
+spec:
+  selfSigned: {}
+---
+# self signed ca. signed by selfsigned-cluster-issuer
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.webhook.tlsSecretName }}-ca
+  namespace: {{ .Release.Namespace }}
+spec:
+  isCA: true
+  commonName: "{{ .Values.webhook.service.name }}-ca"
+  secretName: {{ .Values.webhook.tlsSecretName }}-ca
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+---
+# create an issuer that use the above CA secret to sign webhook certificate
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Values.webhook.tlsSecretName }}-issuer
+  namespace: {{ .Release.Namespace }}
+spec:
+  ca:
+    secretName: {{ .Values.webhook.tlsSecretName }}-ca
+---
+# webhook cert
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.webhook.tlsSecretName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: {{ .Values.webhook.tlsSecretName }}
+  commonName: "{{ .Values.webhook.service.name }}.{{ .Release.Namespace }}.svc"
+  dnsNames:
+    - {{ .Values.webhook.service.name }}.{{ .Release.Namespace }}.svc
+  issuerRef:
+    name: {{ .Values.webhook.tlsSecretName }}-issuer
+    kind: Issuer
+{{- end }}

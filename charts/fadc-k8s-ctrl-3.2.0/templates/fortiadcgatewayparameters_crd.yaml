@@ -1,0 +1,61 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: fortiadcgatewayparameters.fadk8sctrl.fortinet.com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  group: fadk8sctrl.fortinet.com
+  scope: Cluster
+  names:
+    plural: fortiadcgatewayparameters
+    singular: fortiadcgatewayparameters
+    kind: FortiADCGatewayParameters
+    shortNames:
+      - fadgwparam
+  versions:
+    - name: v1alpha2
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                managementIP:
+                  type: string
+                  oneOf:
+                    - format: ipv4
+                    - format: ipv6
+                  description: IP address of the target FortiADC instance
+                managementPort:
+                  type: integer
+                  minimum: 1
+                  maximum: 65535
+                  default: 443
+                credentialsSecretRef:
+                  type: string
+                  description: Name of the Kubernetes Secret storing FortiADC credentials
+                  default: fad-login
+                virtualDomain:
+                  type: string
+                  description: FortiADC virtual domain to use
+                vsTemplate:
+                  type: string
+                  description: Virtual server template name on FortiADC
+              required:
+                - managementIP
+                - managementPort 
+                - credentialsSecretRef
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: MgmtIP
+          type: string
+          jsonPath: .spec.managementIP
+        - name: Partition
+          type: string
+          jsonPath: .spec.virtualDomain
+

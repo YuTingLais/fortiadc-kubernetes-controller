@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ .Values.webhook.mutatingWebhookName }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.webhook.tlsSecretName }}-ca
+webhooks:
+{{- range .Values.webhook.rules.mutating }}
+  - name: {{ .name }}
+    clientConfig:
+      service:
+        name: {{ $.Values.webhook.service.name }}
+        namespace: {{ $.Release.Namespace }}
+        path: {{ .path }}
+        port: {{ $.Values.webhook.service.port }}
+    rules:
+      - apiGroups: ["{{ .group }}"]
+        apiVersions: ["{{ .version }}"]
+        operations: ["CREATE", "UPDATE"]
+        resources:
+        {{- range .resources }}
+          - "{{ . }}"
+        {{- end }}
+        scope: "{{ .scope }}"
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    failurePolicy: Fail
+{{- end }}
+

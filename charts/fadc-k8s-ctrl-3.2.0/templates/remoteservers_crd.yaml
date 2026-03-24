@@ -1,0 +1,139 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: remoteservers.fadk8sctrl.fortinet.com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  preserveUnknownFields: false
+  group: fadk8sctrl.fortinet.com
+  names:
+    kind: RemoteServer
+    plural: remoteservers
+    singular: remoteserver
+    shortNames:
+      - glbrs
+  scope: Namespaced
+  versions:
+    -
+      name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: SERVERTYPE
+          type: string
+          jsonPath: .spec.serverType
+        - name: STATUS
+          type: string
+          jsonPath: .status.status
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required:
+                - serverType
+                - dataCenter
+                - vdom
+              properties:
+                serverType:
+                  type: string
+                  enum: [ FortiADC-SLB, Generic-Host ] #, SDN-Connector
+                  default: FortiADC-SLB
+                  x-kubernetes-validations:
+                    - message: "serverType of Remote Server can not be changed."
+                      rule: self == oldSelf
+                addressType:
+                  type: string
+                  enum: [ ipv4, ipv6 ]
+                ip:
+                  type: string
+                  pattern: '^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)$'
+                ip6:
+                  type: string
+                  pattern: '^(([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){1,7}:)|(([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2})|(([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3})|(([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4})|(([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5})|([0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6}))|(:((:[0-9A-Fa-f]{1,4}){1,7}|:))$'
+                port:
+                  type: integer
+                  minimum: 1
+                  maximum: 65535
+                authType:
+                  type: string
+                  enum: [ none, TCP_MD5SIG, auth_verify ]
+                authKey:
+                  type: string
+                cert:
+                  type: string
+                  pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                caGroup:
+                  type: string
+                  pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                intermediateCAGroup:
+                  type: string
+                  pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                autoSync:
+                  type: string
+                  enum: [ enable, disable ]
+                healthCheckList:
+                  type: string
+                  pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                virtualServers:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                    properties:
+                      name:
+                        type: string
+                        pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                      addressType:
+                        type: string
+                        enum: [ ipv4, ipv6 ]
+                        default: ipv4
+                      ip:
+                        type: string
+                        pattern: '^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)$'
+                      ip6:
+                        type: string
+                        pattern: '^(([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){1,7}:)|(([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2})|(([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3})|(([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4})|(([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5})|([0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6}))|(:((:[0-9A-Fa-f]{1,4}){1,7}|:))$'
+                    x-kubernetes-validations:
+                      - rule: "( (self.addressType == 'ipv4') ? (has(self.ip) && !has(self.ip6)) : (has(self.ip6) && !has(self.ip)) )"
+                        message: "'ip/ip6' must have a valid address corresponding to addressType 'ipv4/ipv6'."
+                dataCenter:
+                  type: object
+                  required:
+                    - name
+                    - location
+                  properties:
+                    name:
+                      type: string
+                      pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                    location:
+                      type: string
+                      pattern: '^[a-zA-Z]+([A-z0-9-_+])*([A-z0-9])$'
+                    description:
+                      type: string
+                vdom:
+                  type: string
+                  pattern: '^[a-zA-Z]+[-A-z0-9_.]+$'
+                  x-kubernetes-validations:
+                    - message: "Vdom of Remote Server can not be changed."
+                      rule: self == oldSelf
+              x-kubernetes-validations:
+                - rule: "!(self.serverType == 'FortiADC-SLB' && (has(self.healthCheckList) || has(self.virtualServers)))"
+                  message: "When serverType is 'FortiADC-SLB', only related fields is allowed."
+                - rule: "!(self.serverType == 'Generic-Host' && (has(self.addressType) || has(self.authType) || has(self.cert) || has(self.caGroup) || has(self.intermediateCAGroup) || has(self.autoSync)))"
+                  message: "When serverType is 'Generic-Host', only related fields is allowed."
+                - rule: "( has(self.addressType) ? ((self.addressType == 'ipv4') ? (has(self.ip) && !has(self.ip6)) : (has(self.ip6) && !has(self.ip))) : (!has(self.ip) && !has(self.ip6)) )"
+                  message: "'ip/ip6' must be set a valid address corresponding to addressType 'ipv4/ipv6'. Otherwise, don't set it"
+                - rule: "( has(self.authType) ? (self.authType != 'none' ? has(self.authKey) : !has(self.authKey)) : !has(self.authKey) )"
+                  message: "When authType is 'TCP_MD5SIG' or 'auth_verify', authKey must be a valid key. Otherwise, don't set it"
+            status:
+              type: object
+              properties:
+                status:
+                  type: string
+                  default: Pending
+      subresources:
+        status: {}

@@ -1,0 +1,290 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: fortiadcvirtualserverpolicies.fadk8sctrl.fortinet.com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  group: fadk8sctrl.fortinet.com
+  names:
+    kind: FortiADCVirtualServerPolicy
+    listKind: FortiADCVirtualServerPolicyList
+    plural: fortiadcvirtualserverpolicies
+    singular: fortiadcvirtualserverpolicy
+    shortNames:
+      - fadcvsp
+  scope: Namespaced
+  versions:
+    - name: v1alpha2
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: TargetKind
+          type: string
+          jsonPath: .spec.targetRef.kind
+        - name: TargetName
+          type: string
+          jsonPath: .spec.targetRef.name
+        - name: AppliedToVS
+          type: string
+          jsonPath: .status.appliedToVS
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      schema:
+        openAPIV3Schema:
+          description: >
+            FortiADCVirtualServerPolicy defines the desired configuration
+            and security policies to be applied to a FortiADC Virtual Server
+            that is associated with a Kubernetes Gateway API resource.
+          type: object
+          properties:
+            apiVersion:
+              description: >
+                APIVersion defines the versioned schema of this representation
+                of an object.
+              type: string
+            kind:
+              description: >
+                Kind is a string value representing the REST resource this
+                object represents.
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: >
+                FortiADCVirtualServerPolicySpec defines the desired state
+                of FortiADCVirtualServerPolicy.
+              type: object
+              required:
+                - targetRef
+              properties:
+
+                # ─── Gateway API Policy Attachment ───────────────────────────
+                targetRef:
+                  description: >
+                    TargetRef identifies the Gateway API resource to which
+                    this policy is applied. Supported kinds: Gateway.
+                  type: object
+                  required:
+                    - group
+                    - kind
+                    - name
+                  properties:
+                    group:
+                      description: Group is the API group of the target resource.
+                      type: string
+                      maxLength: 253
+                      pattern: '^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$'
+                    kind:
+                      description: Kind is the kind of the target resource.
+                      type: string
+                      enum: [ Gateway]
+                      default: Gateway
+                      maxLength: 63
+                      minLength: 1
+                      pattern: '^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$'
+                    name:
+                      description: Name is the name of the target resource.
+                      type: string
+                      maxLength: 253
+                      minLength: 1
+                    namespace:
+                      description: >
+                        Namespace is the namespace of the target resource.
+                        Defaults to the namespace of this policy if omitted.
+                      type: string
+                      maxLength: 63
+                      minLength: 1
+
+                # ─── Network & Load Balancing ─────────────────────────────────
+                interface:
+                  description: >
+                    The FortiADC network interface the Virtual Server listens on.
+                    e.g. "port1", "port2"
+                  type: string
+
+                loadBalanceProfile:
+                  description: >
+                    Name of the Load Balance Profile to apply to the Virtual Server.
+                  type: string
+
+                loadBalanceMethod:
+                  description: >
+                    Load balancing algorithm. e.g. LB_METHOD_ROUND_ROBIN,
+                    LB_METHOD_LEAST_CONNECTION, LB_METHOD_FASTEST_RESPONSE.
+                  type: string
+
+                persistence:
+                  description: >
+                    Session persistence profile name. Used to maintain
+                    client-to-server session stickiness.
+                  type: string
+
+                # ─── Security Profiles ────────────────────────────────────────
+                wafProfile:
+                  description: >
+                    Name of the Web Application Firewall (WAF) profile
+                    to attach to this Virtual Server.
+                  type: string
+
+                avProfile:
+                  description: >
+                    Name of the Antivirus (AV) profile to attach
+                    to this Virtual Server.
+                  type: string
+
+                dosProfile:
+                  description: >
+                    Name of the Denial-of-Service (DoS) protection profile
+                    to attach to this Virtual Server.
+                  type: string
+
+                captchaProfile:
+                  description: >
+                    Name of the Captcha profile used for bot mitigation
+                    on this Virtual Server.
+                  type: string
+
+                ipsProfile:
+                  description: >
+                    Name of the Intrusion Prevention System (IPS) profile
+                    to attach to this Virtual Server.
+                  type: string
+
+                # ─── Traffic & Observability ──────────────────────────────────
+                trafficGroup:
+                  description: >
+                    Traffic group this Virtual Server belongs to,
+                    used for HA (High Availability) failover.
+                  type: string
+
+                fortiview:
+                  description: >
+                    Enable or disable FortiView visibility for this
+                    Virtual Server. e.g. "enable" or "disable".
+                  type: string
+                  enum:
+                    - enable
+                    - disable
+
+                trafficLog:
+                  description: >
+                    Enable or disable traffic logging for this
+                    Virtual Server. e.g. "enable" or "disable".
+                  type: string
+                  enum:
+                    - enable
+                    - disable
+
+                wccp:
+                  description: >
+                    Enable or disable WCCP (Web Cache Communication Protocol)
+                    for this Virtual Server.
+                  type: string
+                  enum:
+                    - enable
+                    - disable
+
+                # ─── FortiGSLB (Global Server Load Balancing) ─────────────────
+                fortigslbPublicIpType:
+                  description: >
+                    The type of public IP used for FortiGSLB integration.
+                    e.g. "static" or "dynamic".
+                  type: string
+
+                fortigslbPublicAddress:
+                  description: >
+                    The public IP address or FQDN registered in FortiGSLB
+                    for this Virtual Server.
+                  type: string
+
+                fortigslbOneClick:
+                  description: >
+                    Enable or disable FortiGSLB one-click GSLB configuration.
+                  type: string
+                  enum:
+                    - enable
+                    - disable
+
+                fortigslbHostName:
+                  description: >
+                    Hostname to register with FortiGSLB for
+                    global load balancing.
+                  type: string
+
+                fortigslbDomainName:
+                  description: >
+                    Domain name to register with FortiGSLB for
+                    global load balancing.
+                  type: string
+
+            status:
+              description: >
+                FortiADCVirtualServerPolicyStatus defines the observed
+                state of FortiADCVirtualServerPolicy.
+              type: object
+              properties:
+                appliedToVS:
+                  description: >
+                    The name of the Virtual Server on FortiADC that
+                    this policy was successfully applied to.
+                  type: string
+                conditions:
+                  description: >
+                    Conditions describe the current state of the policy.
+                    Standard Gateway API condition types are used:
+                    "Accepted", "Programmed".
+                  type: array
+                  maxItems: 8
+                  items:
+                    type: object
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
+                    properties:
+                      lastTransitionTime:
+                        description: >
+                          LastTransitionTime is the last time the condition
+                          transitioned from one status to another.
+                        format: date-time
+                        type: string
+                      message:
+                        description: >
+                          Message is a human-readable explanation of the
+                          condition's current state.
+                        type: string
+                        maxLength: 32768
+                      observedGeneration:
+                        description: >
+                          ObservedGeneration represents the .metadata.generation
+                          that the condition was set based upon.
+                        format: int64
+                        type: integer
+                        minimum: 0
+                      reason:
+                        description: >
+                          Reason contains a programmatic identifier indicating
+                          the reason for the condition's last transition.
+                        type: string
+                        maxLength: 1024
+                        minLength: 1
+                        pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                      status:
+                        description: "Status of the condition: True, False, or Unknown."
+                        type: string
+                        enum:
+                          - "True"
+                          - "False"
+                          - Unknown
+                      type:
+                        description: Type of condition in CamelCase.
+                        type: string
+                        maxLength: 316
+                        pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+

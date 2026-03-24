@@ -5,7 +5,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["pods", "services", "nodes", "endpoints", "secrets"]
-  verbs: ["get", "watch", "list"]
+  verbs: ["get", "watch", "list", "update"]
 - apiGroups:
   - networking.k8s.io
   resources:
@@ -61,10 +61,10 @@ rules:
   - update
 {{- end }}
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers", "remoteservers", "hosts"]
+  resources: ["virtualservers"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["fadk8sctrl.fortinet.com"]
-  resources: ["virtualservers/status", "remoteservers/status", "hosts/status"]
+  resources: ["virtualservers/status"]
   verbs: ["get", "update", "patch"]
 - apiGroups:
   - apiextensions.k8s.io
@@ -74,9 +74,6 @@ rules:
   - get
   - list
   - watch
-- apiGroups: [""]
-  resources: ["pods/exec"]
-  verbs: ["create"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
