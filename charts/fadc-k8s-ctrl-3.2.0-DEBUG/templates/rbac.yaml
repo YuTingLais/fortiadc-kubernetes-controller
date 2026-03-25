@@ -4,7 +4,7 @@ metadata:
   name: {{ include "fadc-k8s-ctrl.serviceAccountName" . }}
 rules:
 - apiGroups: [""]
-  resources: ["pods", "services", "nodes", "endpoints", "secrets"]
+  resources: ["pods", "services", "nodes", "endpoints", "secrets", "namespaces"]
   verbs: ["get", "watch", "list"]
 - apiGroups:
   - apps

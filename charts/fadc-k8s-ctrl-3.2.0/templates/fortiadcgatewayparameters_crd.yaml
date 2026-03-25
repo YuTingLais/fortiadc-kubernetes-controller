@@ -1,7 +1,7 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: fortiadcgatewayparameters.fadk8sctrl.fortinet.com
+  name: fortiadcgatewayparameter.fadk8sctrl.fortinet.com
   annotations:
     "helm.sh/resource-policy": keep
 spec:
@@ -9,8 +9,8 @@ spec:
   scope: Cluster
   names:
     plural: fortiadcgatewayparameters
-    singular: fortiadcgatewayparameters
-    kind: FortiADCGatewayParameters
+    singular: fortiadcgatewayparameter
+    kind: FortiADCGatewayParameter
     shortNames:
       - fadgwparam
   versions:
