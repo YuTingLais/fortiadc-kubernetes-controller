@@ -6,7 +6,7 @@ metadata:
     "helm.sh/resource-policy": keep
 spec:
   group: fadk8sctrl.fortinet.com
-  scope: Cluster
+  scope: Namespaced
   names:
     plural: fortiadcgatewayparameters
     singular: fortiadcgatewayparameter
