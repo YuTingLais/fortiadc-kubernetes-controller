@@ -61,8 +61,6 @@ spec:
               required:
                 - targetRef
               properties:
-
-                # ─── Gateway API Policy Attachment ───────────────────────────
                 targetRef:
                   description: >
                     TargetRef identifies the Gateway API resource to which
@@ -98,69 +96,59 @@ spec:
                       type: string
                       maxLength: 63
                       minLength: 1
-
-                # ─── Network & Load Balancing ─────────────────────────────────
                 interface:
                   description: >
                     The FortiADC network interface the Virtual Server listens on.
                     e.g. "port1", "port2"
                   type: string
-
+                  default: port1
                 loadBalanceProfile:
                   description: >
                     Name of the Load Balance Profile to apply to the Virtual Server.
                   type: string
-
+                  enum: [ LB_PROF_HTTPS, LB_PROF_HTTP ]
+                  default: LB_PROF_HTTPS
                 loadBalanceMethod:
                   description: >
                     Load balancing algorithm. e.g. LB_METHOD_ROUND_ROBIN,
                     LB_METHOD_LEAST_CONNECTION, LB_METHOD_FASTEST_RESPONSE.
                   type: string
-
+                  default: LB_METHOD_ROUND_ROBIN
                 persistence:
                   description: >
                     Session persistence profile name. Used to maintain
                     client-to-server session stickiness.
                   type: string
-
-                # ─── Security Profiles ────────────────────────────────────────
                 wafProfile:
                   description: >
                     Name of the Web Application Firewall (WAF) profile
                     to attach to this Virtual Server.
                   type: string
-
                 avProfile:
                   description: >
                     Name of the Antivirus (AV) profile to attach
                     to this Virtual Server.
                   type: string
-
                 dosProfile:
                   description: >
                     Name of the Denial-of-Service (DoS) protection profile
                     to attach to this Virtual Server.
                   type: string
-
                 captchaProfile:
                   description: >
                     Name of the Captcha profile used for bot mitigation
                     on this Virtual Server.
                   type: string
-
                 ipsProfile:
                   description: >
                     Name of the Intrusion Prevention System (IPS) profile
                     to attach to this Virtual Server.
                   type: string
-
-                # ─── Traffic & Observability ──────────────────────────────────
                 trafficGroup:
                   description: >
                     Traffic group this Virtual Server belongs to,
                     used for HA (High Availability) failover.
                   type: string
-
                 fortiview:
                   description: >
                     Enable or disable FortiView visibility for this
@@ -169,7 +157,6 @@ spec:
                   enum:
                     - enable
                     - disable
-
                 trafficLog:
                   description: >
                     Enable or disable traffic logging for this
@@ -178,7 +165,6 @@ spec:
                   enum:
                     - enable
                     - disable
-
                 wccp:
                   description: >
                     Enable or disable WCCP (Web Cache Communication Protocol)
@@ -187,20 +173,20 @@ spec:
                   enum:
                     - enable
                     - disable
-
-                # ─── FortiGSLB (Global Server Load Balancing) ─────────────────
                 fortigslbPublicIpType:
                   description: >
                     The type of public IP used for FortiGSLB integration.
-                    e.g. "static" or "dynamic".
                   type: string
-
+                  enum: [ ipv4, ipv6 ]
+                  default: ipv4
                 fortigslbPublicAddress:
                   description: >
                     The public IP address or FQDN registered in FortiGSLB
                     for this Virtual Server.
                   type: string
-
+                  oneOf:
+                    - format: ipv4
+                    - format: ipv6
                 fortigslbOneClick:
                   description: >
                     Enable or disable FortiGSLB one-click GSLB configuration.
@@ -208,18 +194,25 @@ spec:
                   enum:
                     - enable
                     - disable
-
                 fortigslbHostName:
                   description: >
                     Hostname to register with FortiGSLB for
                     global load balancing.
                   type: string
-
+                  pattern: '^(@|\*|[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*)$'
                 fortigslbDomainName:
                   description: >
                     Domain name to register with FortiGSLB for
                     global load balancing.
                   type: string
+                  pattern: '^([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\.?$'
+              x-kubernetes-validations:
+                - rule: "!has(self.captchaProfile) || (has(self.wafProfile) || has(self.dosProfile))"
+                  message: "captchaProfile requires wafProfile or dosProfile to be set."
+                - rule: "!(self.fortigslbOneClick == 'enable') || (has(self.fortigslbHostName) && has(self.fortigslbDomainName))"
+                  message: "When fortigslbOneClick is 'enable', both fortigslbHostName and fortigslbDomainName must be set."
+                - rule: "!has(self.fortigslbDomainName) || self.fortigslbDomainName.endsWith('.')"
+                  message: "fortigslbDomainName must end with a dot ('.')."
 
             status:
               description: >
