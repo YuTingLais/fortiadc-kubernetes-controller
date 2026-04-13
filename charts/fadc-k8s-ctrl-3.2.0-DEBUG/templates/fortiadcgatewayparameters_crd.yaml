@@ -42,9 +42,6 @@ spec:
                 virtualDomain:
                   type: string
                   description: FortiADC virtual domain to use
-                vsTemplate:
-                  type: string
-                  description: Virtual server template name on FortiADC
               required:
                 - managementIP
                 - managementPort 
