@@ -5,7 +5,7 @@
 image:
   repository: ytlai/fortiadc-k8s-ctrl
   pullPolicy: IfNotPresent
-  tag: "3.2.0.517"
+  tag: "3.2.0.518"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -78,6 +78,20 @@ webhook:
           - ingresses
         scope: "Namespaced"
         path: /validate-ingress
+      - name: validate-gatewayclass.fadk8sctrl.fortinet.com
+        group: gateway.networking.k8s.io
+        version: v1
+        resources:
+          - gatewayclasses
+        scope: "Namespaced"
+        path: /validate-gatewayclass
+      - name: validate-gateway.fadk8sctrl.fortinet.com
+        group: gateway.networking.k8s.io
+        version: v1
+        resources:
+          - gateways
+        scope: "Namespaced"
+        path: /validate-gateway
 
     mutating:
       - name: mutate-vs.fadk8sctrl.fortinet.com
