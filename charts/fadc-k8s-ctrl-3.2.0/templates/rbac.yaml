@@ -94,7 +94,7 @@ rules:
   - udproutes
   - tlsroutes
   - referencegrants
-  verbs: ["get", "list", "watch"]
+  verbs: ["get", "list", "watch", "update", "patch"]
 - apiGroups: ["gateway.networking.k8s.io"]
   resources:
   - gatewayclasses/status
