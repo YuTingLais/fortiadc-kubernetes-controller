@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: fadc-gateway-class
+spec:
+  controllerName: fortinet.com/fadc-kubernetes-controller
+
+  # References the FortiADCGatewayParameter resource created above
+  parametersRef:
+    group: fadk8sctrl.fortinet.com
+    kind: FortiADCGatewayParameter
+    name: my-fadc-params
+    namespace: gateway-system
+

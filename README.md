@@ -11,16 +11,18 @@ For more much details, please refer to the official document.
 
 ![FortiADC Kubernetes Controller Overview](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fadc-k8s-controller-overview.png?raw=true)
 
-The FortiADC Kubernetes Controller manages both standard Kubernetes Ingress resources and Fortinet-defined custom resources (such as VirtualServer, RemoteServer, and Host). It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Kubernetes Controller: 
+The FortiADC Kubernetes Controller manages Kubernetes Gateway API resources (GatewayClass, Gateway, HTTPRoute), standard Kubernetes Ingress resources, and Fortinet-defined custom resources (such as VirtualServer, RemoteServer, and Host). It enables you to control FortiADC configurations directly from within Kubernetes. The controller runs as a container within a pod deployed in your Kubernetes cluster. The list below outlines the major functionalities of the FortiADC Kubernetes Controller: 
 
- - To list and watch Ingress/Custom resource related resources, such as Ingress, VirtualServer, RemoteServer, Host, Service, Node, Pod and Secret. 
- - To convert Ingress/Fortinet-defined custom resources related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
- - To handle Add/Update/Delete events for watched Ingress/Fortinet-defined custom resources and automatically implement corresponding actions on FortiADC.
+ - To list and watch Gateway API/Ingress/Custom resource related resources, such as GatewayClass, Gateway, HTTPRoute, Ingress, VirtualServer, RemoteServer, Host, Service, Node, Pod and Secret. 
+ - To convert Gateway API/Ingress/Fortinet-defined custom resources related resources to FortiADC objects, such as virtual server, content routing, real server pool, and more.
+ - To handle Add/Update/Delete events for watched Gateway API/Ingress/Fortinet-defined custom resources and automatically implement corresponding actions on FortiADC.
 
 
  ![Ingress](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/figures/fad-k8s-controller-flow.png?raw=true)
 
 The FortiADC Kubernetes Controller integrates Kubernetes native routing with FortiADC’s advanced traffic management and security features like WAF, antivirus scanning, and DoS protection—helping secure web services inside the cluster.
+
+The Kubernetes Gateway API is supported as the native, role-oriented way to describe traffic routing. The controller reconciles GatewayClass, Gateway, and HTTPRoute resources: each Gateway listener (hostname, port, protocol, TLS mode) is translated into a FortiADC virtual server with TLS certificates retrieved from referenced Kubernetes Secrets, and HTTPRoute rules are mapped to FortiADC content routing rules and backend real server pools. Status conditions such as `Accepted`, `Invalid`, `Pending`, `NoMatchingParent`, `BackendNotFound`, and `ResolvedRefs` are reported back to the cluster. Additional FortiADC policy configuration can be attached to a Gateway through the `FortiADCVirtualServerPolicy` CRD.
 
 The VirtualServer custom resource (v1alpha2) extends the standard Ingress by supporting both Layer 7 (HTTP/HTTPS) and Layer 4 (TCP/UDP) traffic, and allows detailed configuration of FortiADC virtual server features.
 
@@ -35,42 +37,38 @@ Additional features such as health checks, traffic log management, and FortiView
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=9>Version</th>
+            <th colspan=7>Version</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>FortiADC Ingress Controller</td>
-			<td>1.0.0</td>
-			<td>1.0.1</td>
-			<td>1.0.2</td>
 			<td>2.0.0</td>
 			<td>2.0.1</td>
 			<td>2.0.2</td>
 			<td>2.0.3</td>
 			<td>3.0.0</td>
 			<td>3.1.0</td>
+			<td>3.2.0</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
-            <td>1.19.8-1.23.x</td>
-            <td>1.19.8-1.24.x</td>
-            <td colspan=2>1.19.8-1.27.x</td>
+            <td>1.19.8-1.27.x</td>
             <td>1.19.8-1.28.x</td>
             <td>1.19.8-1.30.x</td>
 			<td>1.19.8-1.32.x</td>
 			<td>1.19.8-1.33.x</td>
 			<td>1.19.8-1.35.x</td>
+			<td>1.19.8-1.36.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=9>5.4.5 - 8.x.x*</td>
+            <td colspan=7>5.4.5 - 8.x.x*</td>
         </tr>
             <tr>
             <td>Openshift Container platform</td>
-            <td colspan=3>Not supported</td>
             <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=4> 4.13-4.19.x</td>
+            <td colspan=5> 4.13-4.19.x</td>
         </tr>
     </tbody>
 </table>
@@ -110,12 +108,17 @@ To ensure you use an API version of Kubernetes objects that the FortiADC Kuberne
 | Event | v1 |
 |IngressClass  | networking.k8s.io/v1 |
 |Ingress  | networking.k8s.io/v1 |
+|GatewayClass  | gateway.networking.k8s.io/v1 |
+|Gateway  | gateway.networking.k8s.io/v1 |
+|HTTPRoute  | gateway.networking.k8s.io/v1 |
 |ClusterRoleBinding  | rbac.authorization.k8s.io/v1 |
 |ClusterRole  | rbac.authorization.k8s.io/v1 |
 |RoleBinding  | rbac.authorization.k8s.io/v1 |
 |Role  | rbac.authorization.k8s.io/v1 |
 
 :warning: Starting from version 3.0.0, FortiADC Kubernetes Controller utilizes the EndpointSlice resource (discovery.k8s.io/v1) to replace the legacy Endpoints (v1) API, aligning with Kubernetes' modern service discovery mechanisms.
+
+:bulb: The GatewayClass, Gateway, and HTTPRoute resources are backed by the Kubernetes Gateway API. The controller is built against Gateway API **v1.5.1** by default; users may upgrade the Gateway API CRDs to a newer version as needed.
 
 # Installation
 Install the FortiADC Kubernetes Controller using Helm Charts.

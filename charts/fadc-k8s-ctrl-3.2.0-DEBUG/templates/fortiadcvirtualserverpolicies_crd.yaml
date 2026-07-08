@@ -27,9 +27,9 @@ spec:
         - name: TargetName
           type: string
           jsonPath: .spec.targetRef.name
-        - name: AppliedToVS
+        - name: Programmed
           type: string
-          jsonPath: .status.appliedToVS
+          jsonPath: .status.programmed
         - name: Age
           type: date
           jsonPath: .metadata.creationTimestamp
@@ -220,11 +220,11 @@ spec:
                 state of FortiADCVirtualServerPolicy.
               type: object
               properties:
-                appliedToVS:
+                programmed:
                   description: >
-                    The name of the Virtual Server on FortiADC that
-                    this policy was successfully applied to.
-                  type: string
+                    Indicates whether the policy has been successfully programmed.
+                    True if programmed, False otherwise.
+                  type: boolean
                 conditions:
                   description: >
                     Conditions describe the current state of the policy.

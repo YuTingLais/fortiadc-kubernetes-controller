@@ -42,6 +42,7 @@ spec:
                 virtualDomain:
                   type: string
                   description: FortiADC virtual domain to use
+                  default: root
               required:
                 - managementIP
                 - managementPort 

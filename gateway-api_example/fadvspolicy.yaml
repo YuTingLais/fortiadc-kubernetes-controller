@@ -1,0 +1,23 @@
+apiVersion: fadk8sctrl.fortinet.com/v1alpha2
+kind: FortiADCVirtualServerPolicy
+metadata:
+  name: fad-vs-policy
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: my-gateway
+    namespace: gateway-system #if omitted, default is the namespace of policy
+  interface: port3
+  loadBalanceMethod: LB_METHOD_ROUND_ROBIN
+  wafProfile: High-Level-Security
+  trafficGroup: default
+  fortiview: "enable"
+  trafficLog: "enable"
+  fortigslbOneClick: "enable"
+  fortigslbPublicIpType: "ipv4"
+  fortigslbPublicAddress: "203.0.113.10"
+  fortigslbHostName: "www"
+  fortigslbDomainName: "example.com."
+
