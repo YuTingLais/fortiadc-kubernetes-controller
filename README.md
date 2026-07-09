@@ -263,6 +263,61 @@ Configuration parameters are required to be specified in the Fortinet-defined CR
 |overlay_tunnel|Overlay tunnel name. Used for service with ClusterIP type||
 
 # Deployment
+## Deploy Gateway and HTTPRoute
+Below is an example to deploy a Kubernetes Gateway API `Gateway` together with an `HTTPRoute` that routes client traffic to backend Services based on hostnames and HTTP match conditions.
+
+ ```mermaid
+graph LR;
+  client([client])-.-> FortiADC_load_balancer["FortiADC load balancer"] .-> gateway["Gateway my-gateway, 172.23.133.109<br/>listeners: http-web(:80), http-alt(:8082), https-web(:443)"];
+  gateway-->|host: www.example.com / api.example.com<br/>path /admin, header x-role=admin, query env=sandbox|service3[Service service3:1245];
+  gateway-->|host: www.example.com / api.example.com<br/>header x-role=user|service1[Service service1:1241];
+  subgraph cluster
+    gateway;
+    service3-->pod5[Pod];
+    service1-->pod1[Pod];
+    service1-->pod2[Pod];
+  end
+  classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+  classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+  classDef cluster fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
+  class gateway,service1,service3,pod1,pod2,pod5 k8s;
+  class client plain;
+  class cluster cluster;
+```
+
+In this example, the client reaches the FortiADC load balancer through the `Gateway` `my-gateway` (gatewayClassName `fadc-gateway-class`) deployed in the `gateway-system` namespace. The Gateway exposes three listeners:
+ - `http-web` — port 80, HTTP, hostname `www.examplep.com`, accepts HTTPRoute/GRPCRoute from namespaces labeled `allow-gateway-access=true`.
+ - `http-alt` — port 8082, HTTP, accepts HTTPRoute from all namespaces.
+ - `https-web` — port 443, HTTPS Terminate, server certificate `my-web-cert-secret`, accepts HTTPRoute from the same namespace.
+
+The `HTTPRoute` `my-httproute` in the `httproute` namespace attaches to `my-gateway` (via `parentRefs`) and matches the hostnames `www.example.com` and `api.example.com`. Requests are routed to the backend Services as follows:
+ - Path prefix `/admin` with header `x-role: admin` and query parameter `env=sandbox` → `service3:1245`
+ - Header `x-role: user` (any path) → `service1:1241`
+
+### Deploy the Pods and expose the Services
+
+Service1:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/service1.yaml
+Service3:
+
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/service_examples/service3.yaml
+
+### Deploy the Gateway and HTTPRoute
+
+Download the gateway.yaml and httpRoute.yaml:
+
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/gateway.yaml -o gateway.yaml
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/httpRoute.yaml -o httpRoute.yaml
+
+Modify the Gateway Spec (for example `addresses`, listener hostnames, `certificateRefs`) and the HTTPRoute Spec (for example `hostnames`, match rules, `backendRefs`) to accommodate to your environment. Then deploy the Gateway and HTTPRoute with kubectl command:
+
+    kubectl apply -f gateway.yaml
+    kubectl apply -f httpRoute.yaml
+
+>[!NOTE]
+>Before deploying the Gateway, make sure the referenced `GatewayClass` (and its `FortiADCGatewayParameter`) already exists, and that the namespace selector labels (for example `allow-gateway-access=true`) are set on the namespaces where HTTPRoutes will be deployed.
+
 ## Deploy Layer7 HTTP(S) Ingress/VirtualServer
 Below is an example to deploy a simple-fanout Ingress/VirtualServer
 

@@ -30,7 +30,7 @@ spec:
     - name: service3
       port: 1245
   - matches:
-      headers:
+    - headers:
       - type: Exact
         name: x-role
         value: user

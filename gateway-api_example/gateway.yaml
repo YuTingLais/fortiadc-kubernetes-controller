@@ -15,7 +15,7 @@ spec:
     - name: http-web
       port: 80
       protocol: HTTP
-      hostname: "www.examplep.com"
+      hostname: "www.example.com"
       allowedRoutes:
         namespaces:
           from: Selector
@@ -41,9 +41,9 @@ spec:
       protocol: HTTPS
       tls:
         mode: Terminate
-          # Apply your server certificate secret
-          #        certificateRefs:
-          #          - name: my-web-cert-secret
+        # Apply your server certificate secret
+        certificateRefs:
+        - name: my-web-cert-secret
       allowedRoutes:
         namespaces:
           from: Same

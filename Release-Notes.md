@@ -1,5 +1,19 @@
 # FortiADC Ingress Controller Release Notes
 
+## 3.2.0
+### What's New
+1. Support Kubernetes version to 1.36
+2. Support Kubernetes Gateway API: FortiADC Kubernetes Controller 3.2.0 introduces support for the Kubernetes
+Gateway API (v1), including the GatewayClass, Gateway, and HTTPRoute resources. This enables standardized,
+vendor-neutral configuration of Layer 7 traffic routing and TLS termination on FortiADC from Kubernetes manifests,
+complementing the existing Ingress and CRD-based models.
+2. New FortiADCGatewayParameter Custom Resource: a Fortinet-defined Kubernetes Custom Resource that is referenced
+by a GatewayClass via its `parametersRef` field to supply FortiADC-specific configuration (such as FADC address,
+credentials, and VDOM) for Gateway API resources.
+3. New FortiADCVirtualServerPolicy Custom Resource: a Fortinet-defined Kubernetes Custom Resource that can be
+attached to a Gateway to apply FortiADC virtual server policy configuration (such as security profiles and
+traffic shaping) on top of the Gateway API-managed virtual servers.
+
 ## 3.1.0
 ### What's New
 1. Support Kubernetes version to 1.35

@@ -76,11 +76,6 @@ spec:
             hostname: "new-app.example.com"
             port: 8443
             statusCode: 302
-      backendRefs:
-        - name: service1
-          port: 1241
-        - name: service2
-          port: 1242
 
     - matches:
         - path:
@@ -97,9 +92,6 @@ spec:
       backendRefs:
         - name: service1
           port: 1241
-          weight: 10
         - name: service2
           port: 1242
-          weight: 90
-
 
