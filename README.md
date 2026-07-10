@@ -37,38 +37,29 @@ Additional features such as health checks, traffic log management, and FortiView
     <thead>
         <tr>
             <th>Product</th>
-            <th colspan=7>Version</th>
+            <th colspan=3>Version</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>FortiADC Ingress Controller</td>
-			<td>2.0.0</td>
-			<td>2.0.1</td>
-			<td>2.0.2</td>
-			<td>2.0.3</td>
 			<td>3.0.0</td>
 			<td>3.1.0</td>
 			<td>3.2.0</td>
         </tr>
         <tr>
             <td>Kubernetes</td>
-            <td>1.19.8-1.27.x</td>
-            <td>1.19.8-1.28.x</td>
-            <td>1.19.8-1.30.x</td>
-			<td>1.19.8-1.32.x</td>
 			<td>1.19.8-1.33.x</td>
 			<td>1.19.8-1.35.x</td>
 			<td>1.19.8-1.36.x</td>
         </tr>
         <tr>
             <td>FortiADC</td>
-            <td colspan=7>5.4.5 - 8.x.x*</td>
+            <td colspan=3>5.4.5 - 8.x.x*</td>
         </tr>
             <tr>
             <td>Openshift Container platform</td>
-            <td colspan=2> 4.7-4.12.x</td>
-            <td colspan=5> 4.13-4.19.x</td>
+            <td colspan=3> 4.13-4.19.x</td>
         </tr>
     </tbody>
 </table>
@@ -77,7 +68,7 @@ Additional features such as health checks, traffic log management, and FortiView
 >Some features of the FortiADC Kubernetes Controller require a corresponding version of FortiADC support. Please check the [release notes](https://github.com/YuTingLais/fortiadc-kubernetes-controller/blob/main/Release-Notes.md).
 
 >[!WARNING]
->When using FortiADC Kubernetes Controller version 2.0.x or later, all Ingress-related objects on FortiADC—including virtual servers, content routing rules, real server pools, and real servers—are fully managed by the controller.
+>All Ingress-related objects on FortiADC—including virtual servers, content routing rules, real server pools, and real servers—are fully managed by the controller.
 As a result, any such object not provisioned by the FortiADC Kubernetes Controller will be automatically deleted to ensure configuration consistency.
 
 ## Supported Environment
@@ -93,6 +84,10 @@ To ensure you use an API version of Kubernetes objects that the FortiADC Kuberne
 
 
     for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
+
+<details>
+<summary><b>Click to expand the supported Kubernetes API object versions</b></summary>
+<br>
 
 | API Object | API Version |
 |--|--|
@@ -115,6 +110,8 @@ To ensure you use an API version of Kubernetes objects that the FortiADC Kuberne
 |ClusterRole  | rbac.authorization.k8s.io/v1 |
 |RoleBinding  | rbac.authorization.k8s.io/v1 |
 |Role  | rbac.authorization.k8s.io/v1 |
+
+</details>
 
 :warning: Starting from version 3.0.0, FortiADC Kubernetes Controller utilizes the EndpointSlice resource (discovery.k8s.io/v1) to replace the legacy Endpoints (v1) API, aligning with Kubernetes' modern service discovery mechanisms.
 
@@ -181,13 +178,6 @@ Check the log of the FortiADC Kubernetes Controller.
     helm repo update
     helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
->[!WARNING]
->Because the Helm chart repository was renamed to fortiadc-kubernetes-controller starting from version 3.0.0, if you are upgrading from a 2.x version to 3.0.0 or later, please remove the old Helm repository and add the new one before proceeding.
-
-    helm repo remove fortiadc-ingress-controller
-    helm repo add fortiadc-kubernetes-controller https://YuTingLais.github.io/fortiadc-kubernetes-controller/
-    helm repo update
-
 
 
 ## Uninstall Chart
@@ -209,6 +199,10 @@ The secret is named fad-login. This value will be specified in the Ingress annot
 
 ## Annotation in Ingress
 Configuration parameters are required to be specified in the Ingress annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the Ingress resource.
+
+<details>
+<summary><b>Click to expand the full Ingress annotation reference</b></summary>
+<br>
 
 |Parameter  | Description | Default |
 |--|--|--|
@@ -239,8 +233,14 @@ Configuration parameters are required to be specified in the Ingress annotation 
 | virtual-server-fortigslb-hostname | The **Host Name** option is available if **One Click GSLB Server** is enabled. Enter the hostname part of the FQDN, such as `www`. **Note:** You can specify the @ symbol to denote the zone root. The value substitute for @ is the preceding $ORIGIN directive. | |
 | virtual-server-fortigslb-domainname | The **Domain Name** option is available if **One Click GSLB Server** is enabled. The domain name must end with a period. For example,`example.com.` | |
 
+</details>
+
 ## Annotation in Fortinet-defined CRD
 Configuration parameters are required to be specified in the Fortinet-defined CRD annotation to enable the FortiADC Kubernetes Controller to determine how to deploy the VirtualServer, RemoteServer, and Host resource.
+
+<details>
+<summary><b>Click to expand the Fortinet-defined CRD annotation reference</b></summary>
+<br>
 
 |Parameter  | Description | Default |
 |--|--|--|
@@ -249,10 +249,13 @@ Configuration parameters are required to be specified in the Fortinet-defined CR
 | fortiadc-login | The Kubernetes secret name preserves the FortiADC authentication information. <br> **Note**: This parameter is **required**. | |
 | fortiadc-ctrl-log | Enable/disable the FortiADC Kubernetes Controller log. Once enabled, the FortiADC Kubernetes Controller will print the verbose log the next time the VirtualServer/RemoteServer/Host is updated. |enable |
 
+</details>
+
 ## Annotation in Service
 
->**Warning**
->The FortiADC Kubernetes Controller version 1.0.x only supports services of type **NodePort**. Starting from 2.0.x, both NodePort and ClusterIP service types are supported.
+<details>
+<summary><b>Click to expand the Service annotation reference</b></summary>
+<br>
 
 |Parameter  | Description | Default |
 |--|--|--|
@@ -261,6 +264,8 @@ Configuration parameters are required to be specified in the Fortinet-defined CR
 | health-check-list | One or more health check configuration names. Concatenate the health check names with a space between each name. For example: "LB_HLTHCK_ICMP LB_HLTHCK_HTTP". For more details, see the FortiADC Handbook on health checks. ||
 | real-server-ssl-profile| Specify the real server SSL profile name. Real server profiles determine settings for communication between FortiADC and the backend real servers. The default is NONE, which is applicable for non-SSL traffic. For more details, see the FortiADC Handbook on SSL profiles. |NONE|
 |overlay_tunnel|Overlay tunnel name. Used for service with ClusterIP type||
+
+</details>
 
 # Deployment
 ## Deploy Gateway and HTTPRoute
@@ -305,18 +310,21 @@ Service3:
 
 ### Deploy the Gateway and HTTPRoute
 
-Download the gateway.yaml and httpRoute.yaml:
+Download the myFadcParams.yaml, gatewayClass.yaml, fadvspolicy.yaml, gateway.yaml and httpRoute.yaml:
 
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/myFadcParams.yaml -o myFadcParams.yaml
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/gatewayClass.yaml -o gatewayClass.yaml
+    curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/fadvspolicy.yaml -o fadvspolicy.yaml
     curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/gateway.yaml -o gateway.yaml
     curl -k https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/gateway-api_example/httpRoute.yaml -o httpRoute.yaml
 
-Modify the Gateway Spec (for example `addresses`, listener hostnames, `certificateRefs`) and the HTTPRoute Spec (for example `hostnames`, match rules, `backendRefs`) to accommodate to your environment. Then deploy the Gateway and HTTPRoute with kubectl command:
+Modify the `FortiADCGatewayParameter` Spec (for example `managementIP`, `credentialsSecretRef`, `virtualDomain`), the `GatewayClass` Spec (for example the `parametersRef` referencing your `FortiADCGatewayParameter`), the `FortiADCVirtualServerPolicy` Spec (for example `targetRef` pointing at your Gateway, `interface`, `loadBalanceMethod`, `wafProfile`), the Gateway Spec (for example `addresses`, listener hostnames, `certificateRefs`) and the HTTPRoute Spec (for example `hostnames`, match rules, `backendRefs`) to accommodate to your environment. Then deploy the `FortiADCGatewayParameter`, `GatewayClass`, `FortiADCVirtualServerPolicy`, Gateway and HTTPRoute with kubectl command:
 
+    kubectl apply -f myFadcParams.yaml
+    kubectl apply -f gatewayClass.yaml
+    kubectl apply -f fadvspolicy.yaml
     kubectl apply -f gateway.yaml
     kubectl apply -f httpRoute.yaml
-
->[!NOTE]
->Before deploying the Gateway, make sure the referenced `GatewayClass` (and its `FortiADCGatewayParameter`) already exists, and that the namespace selector labels (for example `allow-gateway-access=true`) are set on the namespaces where HTTPRoutes will be deployed.
 
 ## Deploy Layer7 HTTP(S) Ingress/VirtualServer
 Below is an example to deploy a simple-fanout Ingress/VirtualServer
