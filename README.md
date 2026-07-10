@@ -178,6 +178,38 @@ Check the log of the FortiADC Kubernetes Controller.
     helm repo update
     helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
 
+>[!IMPORTANT]
+> Starting from 3.2.0, the chart ships the Kubernetes Gateway API CRDs (`GatewayClass`, `Gateway`, `HTTPRoute`) under the `crds/` directory. Per Helm convention, **`helm upgrade` does not install or update CRDs placed in the `crds/` directory** — only `helm install` creates them, and only when they do not already exist. CRDs that live under `templates/` (the Fortinet-defined `VirtualServer`, `RemoteServer`, `Host`, `FortiADCGatewayParameter`, `FortiADCVirtualServerPolicy`) are still managed normally by `helm upgrade`.
+
+### Upgrading from 3.1.x to 3.2.x
+
+3.1.x charts do not contain the Gateway API CRDs, so a plain `helm upgrade` to 3.2.x will leave the cluster without the `GatewayClass` / `Gateway` / `HTTPRoute` CRDs. The controller pod will fail to register the Gateway API informers on startup and repeatedly restart until the CRDs are present. Install the Gateway API CRDs **before** running `helm upgrade`:
+
+    # 1. Install the Gateway API CRDs shipped with the 3.2.x chart
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/charts/fadc-k8s-ctrl-3.2.0/crds/gatewayclass.yaml
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/charts/fadc-k8s-ctrl-3.2.0/crds/gateway.yaml
+    kubectl apply -f https://raw.githubusercontent.com/YuTingLais/fortiadc-kubernetes-controller/main/charts/fadc-k8s-ctrl-3.2.0/crds/httproute.yaml
+
+    # 2. Verify the CRDs are established before upgrading
+    kubectl wait --for=condition=Established crd/gatewayclasses.gateway.networking.k8s.io crd/gateways.gateway.networking.k8s.io crd/httproutes.gateway.networking.k8s.io --timeout=120s
+
+    # 3. Now upgrade the chart
+    helm repo update
+    helm upgrade --devel --debug --reset-values -n fortiadc-ingress first-release fortiadc-kubernetes-controller/fadc-k8s-ctrl
+
+If you already have the Gateway API CRDs installed in the cluster (for example, shared with another controller such as Istio or Envoy Gateway), `kubectl apply -f` is idempotent and only updates the schema — it will not delete your existing `Gateway` / `HTTPRoute` instances.
+
+>[!WARNING]
+> Gateway API support is detected **once at controller startup**. If the controller pod is already running when the CRDs are absent, its log will show `Gateway API CRDs not found in cluster, disabling Gateway support`, and applying the CRDs afterwards will not turn Gateway support on — the running process never re-checks. If you see that message on a running controller, restart the pod after the CRDs are established:
+>
+>     kubectl rollout restart -n fortiadc-ingress deployment first-release-fadc-k8s-ctrl
+>
+> The restarted pod will detect the CRDs on boot and enable Gateway support. This is why the steps above install the CRDs **before** running `helm upgrade`.
+
+### Upgrading between 3.2.x patch releases
+
+If a future 3.2.x chart updates the Gateway API CRD schemas, re-run the `kubectl apply -f crds/` step above to refresh the CRDs, then `helm upgrade`. The Fortinet-defined CRDs under `templates/` are updated automatically by `helm upgrade` and do not need a separate step.
+
 
 
 ## Uninstall Chart
